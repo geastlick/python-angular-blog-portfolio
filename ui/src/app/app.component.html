@@ -1,0 +1,27 @@
+<p-panel>
+    <ng-template pTemplate="header">
+        Header
+    </ng-template>
+    <p-splitter [panelSizes]="[10,90]">
+        <ng-template pTemplate>
+            <p-accordion>
+                <p-accordionTab header="My Blogs">
+                </p-accordionTab>
+                <p-accordionTab header="Authors">
+                </p-accordionTab>
+                <p-accordionTab header="Blogs">
+                </p-accordionTab>
+                <p-accordionTab header="Followed Authors">
+                </p-accordionTab>
+                <p-accordionTab header="Followed Blogs">
+                </p-accordionTab>
+            </p-accordion>
+        </ng-template>
+        <ng-template pTemplate>
+            <router-outlet>loading...</router-outlet>
+        </ng-template>
+    </p-splitter>
+    <ng-template pTemplate="footer">
+        footer
+    </ng-template>
+</p-panel>
