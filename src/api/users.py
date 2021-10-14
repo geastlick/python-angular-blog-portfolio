@@ -7,8 +7,10 @@ bp = Blueprint('users', __name__, url_prefix='/users')
 
 def scramble(password: str):
     """Hash and salt the given password"""
-    salt = secrets.token_hex(16)
-    return hashlib.sha512((password + salt).encode('utf-8')).hexdigest()
+    salt = secrets.token_hex(16).encode('utf-8')
+    rtn = hashlib.scrypt(password.encode('utf-8'), salt=salt, n=2,
+                              r=8, p=1).hex() + ";" + salt.hex()
+    return rtn
 
 @bp.route('/<int:id>', methods=['GET'])
 def show(id: int):

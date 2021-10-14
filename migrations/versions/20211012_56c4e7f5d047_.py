@@ -21,7 +21,7 @@ def upgrade():
     op.create_table('users',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('username', sa.String(length=30), nullable=False),
-    sa.Column('password', sa.String(length=128), nullable=False),
+    sa.Column('password', sa.String(length=256), nullable=False),
     sa.Column('name', sa.String(length=128), nullable=False),
     sa.Column('email', sa.String(length=255), nullable=True),
     sa.Column('block_until', sa.DateTime(), nullable=True),
