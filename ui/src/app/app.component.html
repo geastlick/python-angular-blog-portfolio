@@ -1,27 +1,20 @@
-<p-panel>
+<p-splitter [panelSizes]="[10,80,10]" layout="vertical">
     <ng-template pTemplate="header">
-        Header
+        <app-header></app-header>
     </ng-template>
-    <p-splitter [panelSizes]="[10,90]">
-        <ng-template pTemplate>
-            <p-accordion>
-                <p-accordionTab header="My Blogs">
-                </p-accordionTab>
-                <p-accordionTab header="Authors">
-                </p-accordionTab>
-                <p-accordionTab header="Blogs">
-                </p-accordionTab>
-                <p-accordionTab header="Followed Authors">
-                </p-accordionTab>
-                <p-accordionTab header="Followed Blogs">
-                </p-accordionTab>
-            </p-accordion>
-        </ng-template>
-        <ng-template pTemplate>
-            <router-outlet>loading...</router-outlet>
-        </ng-template>
-    </p-splitter>
+    <ng-template pTemplate="body">
+        <p-splitter [panelSizes]="[10,90]">
+            <ng-template pTemplate="left-nav">
+                <app-left-nav></app-left-nav>
+            </ng-template>
+            <ng-template pTemplate="content">
+                <router-outlet>loading...</router-outlet>
+            </ng-template>
+        </p-splitter>
+    </ng-template>
     <ng-template pTemplate="footer">
-        footer
+        <div class="p-grid p-ai-end vertical-container">
+            <app-footer></app-footer>
+        </div>
     </ng-template>
-</p-panel>
+</p-splitter>

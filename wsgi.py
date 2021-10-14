@@ -19,7 +19,8 @@ def login():
     user = User.query.filter_by(username=request.json['username']).first()
     if user is None:
         return abort(400)
-    if user.verify(session['password']):
+    if user.verify(request.json['password']):
+        session['username'] = user.username
         return jsonify(True)
     return jsonify(False)
 

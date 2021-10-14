@@ -1,6 +1,7 @@
 """ flask_sqlalchemy models"""
 import datetime
 import hashlib
+import binascii
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 
@@ -28,8 +29,8 @@ class User(db.Model):
 
     def verify(self, password):
         (pwd, salt) = self.password.split(";")
-        test = hashlib.scrypt(password.encode('utf-8'), salt=salt, n=2,
-                              r=8, p=1).hex()
+        test = binascii.hexlify(hashlib.scrypt(password.encode('utf-8'), salt=salt.encode('utf-8'), n=2,
+                                               r=8, p=1)).decode('utf-8')
         return pwd == test
 
     def serialize(self):

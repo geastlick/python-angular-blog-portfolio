@@ -5,6 +5,7 @@ import datetime
 import random
 import string
 import hashlib
+import binascii
 import secrets
 from faker import Faker
 from faker.providers import internet
@@ -26,8 +27,8 @@ def random_passhash():
     ).encode('utf-8')
 
     salt = secrets.token_hex(16).encode('utf-8')
-    password = hashlib.scrypt(raw, salt=salt, n=2,
-                              r=8, p=1).hex() + ";" + salt.hex()
+    password = binascii.hexlify(hashlib.scrypt(raw, salt=salt, n=2,
+                                               r=8, p=1)).decode('utf-8') + ";" + salt.decode('utf-8')
 
     return password
 
@@ -58,8 +59,8 @@ def main():
 
     # Create DEMO user
     salt = secrets.token_hex(16).encode('utf-8')
-    password = hashlib.scrypt(b'demo', salt=salt, n=2,
-                              r=8, p=1).hex() + ";" + salt.hex()
+    password = binascii.hexlify(hashlib.scrypt(b'demo', salt=salt, n=2,
+                                               r=8, p=1)).decode('utf-8') + ";" + salt.decode('utf-8')
     last_user = User(
         username="demo",
         password=password,
