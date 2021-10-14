@@ -190,9 +190,9 @@ def main():
         if entries < 2 or not published:
             return 0
         elif entries <= 8:
-            return random.randint(1, 5)
-        else:
             return random.randint(1, 10)
+        else:
+            return random.randint(5, 20)
 
     for b in range(BLOG_COUNT):
         blog = last_blog.id - BLOG_COUNT + b + 1
@@ -291,7 +291,7 @@ def main():
         db.session.commit()
 
     ratings = set()
-    for _ in range(BLOG_COUNT//4):
+    for _ in range(BLOG_COUNT):
         blog = published_blogs[random.randint(0, len(published_blogs)-1)]
         user = random.randint(last_user.id - USER_COUNT + 1, last_user.id)
         candidate = (blog, user)
@@ -310,7 +310,7 @@ def main():
     db.session.commit()
 
     ratings = set()
-    for _ in range(len(published_entries)//4):
+    for _ in range(len(published_entries)*2):
         blog_entry = published_entries[random.randint(
             0, len(published_entries)-1)]
         user = random.randint(last_user.id - USER_COUNT + 1, last_user.id)
@@ -330,7 +330,7 @@ def main():
     db.session.commit()
 
     ratings = set()
-    for _ in range(COMMENT_COUNT//4):
+    for _ in range(COMMENT_COUNT*2):
         comment = random.randint(
             last_comment.id - COMMENT_COUNT + 1, last_comment.id)
         user = random.randint(last_user.id - USER_COUNT + 1, last_user.id)
