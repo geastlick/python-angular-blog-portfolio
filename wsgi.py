@@ -32,5 +32,17 @@ def logout():
     return jsonify(True)
 
 
+@app.route('/self')
+def self():
+    if "username" not in session:
+        return abort(400)
+    user = User.query.filter_by(username=session['username']).first()
+    if user is None:
+        # This is a security issue ... username set in the session for an invalid user!
+        session.pop('username', None)
+        return abort(400)
+    return jsonify(user.serialize())
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5001)
