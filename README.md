@@ -17,3 +17,5 @@ GET | api/self | Returns 400 if no session, else returns user {id, username, nam
 POST | api/users | Payload: {username, password, name, email}.  Returns 400 if any are not provided, username is less than 3 characters or password is less than 8 characters.  Also returns 400 if username is already taken.  Returns created user {id, username, name, email, block_until, avatar}
 DELETE | api/users/<id:int> | Returns 400 if not logged in as the user to be deleted.  Logs out and returns true if successful
 PUT, PATCH | api/users/<id:int> | Returns 400 if not logged in as the user to be deleted.  Will change username, name, email, or password depending on payload.  If changing password, then the old password must be provided as well.
+GET | api/authors | Returns {id, name, avatar} or all authors who have published a blog order by name
+GET | api/blogs | Returns {id, title, description, category} of all published blogs order by ratings

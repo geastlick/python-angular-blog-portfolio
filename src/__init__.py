@@ -32,7 +32,9 @@ def create_app(test_config=None):
     db.init_app(app)
     Migrate(app, db)
 
-    from .api import users
+    from .api import users, authors, blogs
     app.register_blueprint(users.bp)
+    app.register_blueprint(authors.bp)
+    app.register_blueprint(blogs.bp)
 
     return app
