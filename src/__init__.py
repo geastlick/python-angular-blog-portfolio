@@ -1,17 +1,21 @@
 import os
-import decimal
 import json
+import decimal
+import datetime
 from flask import Flask
 from flask_migrate import Migrate
 
 # https://flask.palletsprojects.com/en/2.0.x/patterns/appfactories/
 
 class CustomJsonEncoder(json.JSONEncoder):
+    """ serialize common types """
 
     def default(self, obj):
         if isinstance(obj, decimal.Decimal):
             # Convert decimal instances to strings.
             return str(obj)
+        elif isinstance(obj, datetime.datetime):
+            return obj.isoformat()
         return super(CustomJsonEncoder, self).default(obj)
 
 def create_app(test_config=None):
@@ -42,9 +46,10 @@ def create_app(test_config=None):
     db.init_app(app)
     Migrate(app, db)
 
-    from .api import users, authors, blogs
+    from .api import users, authors, blogs, blog_entries
     app.register_blueprint(users.bp)
     app.register_blueprint(authors.bp)
     app.register_blueprint(blogs.bp)
+    app.register_blueprint(blog_entries.bp)
 
     return app

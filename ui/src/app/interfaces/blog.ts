@@ -3,6 +3,7 @@ export interface Blog {
     "title": string,
     "description": string,
     "category": string,
+    "published": Date,
     "author": string,
     "avatar": string
     "stars_avg": number,
