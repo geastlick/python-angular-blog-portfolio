@@ -28,9 +28,15 @@ def popular_blogs():
         .filter(Blog.published is not None)
         .group_by(Blog.id, Blog.title, Blog.description, BlogCategory.name, User.name, User.avatar,)
         .order_by('sum_stars')
-    ).all()
+    )
+    if request.args.get('page_size') is not None:
+        page_size = int(request.args.get('page_size'))
+        q = q.limit(page_size)
+        if request.args.get('page') is not None:
+            page = int(request.args.get('page'))
+            q = q.offset(page_size * (page - 1))
     result = []
-    for blog in q:
+    for blog in q.all():
         result.append({
             "id": blog.id,
             "title": blog.title,
