@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { UserService } from '../services/users.service';
+import { UserService } from '../../../services/users.service';
 
 @Component({
     selector: 'app-register',

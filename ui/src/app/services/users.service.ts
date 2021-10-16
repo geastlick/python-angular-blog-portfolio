@@ -4,7 +4,8 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
-import { HttpErrorHandler, HandleError } from '../http-error-handler.service';
+import { HttpErrorHandler, HandleError } from './http-error-handler.service';
+import { User } from '../interfaces/user';
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -16,13 +17,12 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class UserService {
-  usersUrl = 'api/users';
   private handleError: HandleError;
 
   constructor(
     private http: HttpClient,
     httpErrorHandler: HttpErrorHandler) {
-    this.handleError = httpErrorHandler.createHandleError('HeroesService');
+    this.handleError = httpErrorHandler.createHandleError('UserService');
   }
 
   // Following are special login/logout/register related.
@@ -32,6 +32,13 @@ export class UserService {
       .pipe(
           catchError(this.handleError('login', false))
       );
+  }
+
+  self(): Observable<User> {
+    return this.http.get<User>('api/self', httpOptions)
+    .pipe(
+        catchError(this.handleError('self', <User>{}))
+    );
   }
 
   logout(): Observable<boolean> {
@@ -45,7 +52,7 @@ export class UserService {
     const data: any = {username: username, password: password, name: name, email: email};
     return this.http.post<any>('api/users', data, httpOptions)
       .pipe(
-          catchError(this.handleError('login', false))
+          catchError(this.handleError('login', {}))
       );
   }
 }

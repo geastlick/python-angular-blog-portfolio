@@ -20,17 +20,18 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
 import {ConfirmPopupModule} from 'primeng/confirmpopup';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 
-import { AppHeaderComponent } from './layout/app-header/app-header.component';
-import { AppFooterComponent } from './layout/app-footer/app-footer.component';
-import { AppLeftNavComponent } from './layout/app-left-nav/app-left-nav.component';
+import { AppHeaderComponent } from './components/layout/app-header/app-header.component';
+import { AppFooterComponent } from './components/layout/app-footer/app-footer.component';
+import { AppLeftNavComponent } from './components/layout/app-left-nav/app-left-nav.component';
 import { UserService } from './services/users.service';
-import { HttpErrorHandler } from './http-error-handler.service';
-import { ErrorMessageService } from './error-message.service';
-import { SigninComponent } from './signin/signin.component';
-import { RegisterComponent } from './register/register.component';
-import { SigninRegisterComponent } from './signin-register/signin-register.component';
-import { PopularBlogsComponent } from './popular-blogs/popular-blogs.component';
-import { BlogCardComponent } from './blog-card/blog-card.component'
+import { HttpErrorHandler } from './services/http-error-handler.service';
+import { ErrorMessageService } from './services/error-message.service';
+import { SigninComponent } from './components/security/signin/signin.component';
+import { RegisterComponent } from './components/security/register/register.component';
+import { SigninRegisterComponent } from './components/security/signin-register/signin-register.component';
+import { PopularBlogsComponent } from './components/popular-blogs/popular-blogs.component';
+import { BlogCardComponent } from './components/blog-card/blog-card.component'
+import { BlogService } from './services/blogs.service';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,12 @@ import { BlogCardComponent } from './blog-card/blog-card.component'
     ConfirmPopupModule,
     ConfirmDialogModule,
   ],
-  providers: [UserService, HttpErrorHandler, ErrorMessageService],
+  providers: [
+      UserService,
+      BlogService,
+      HttpErrorHandler,
+      ErrorMessageService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

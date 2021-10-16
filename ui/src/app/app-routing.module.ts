@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PopularBlogsComponent } from './popular-blogs/popular-blogs.component';
+import { PopularBlogsComponent } from './components/popular-blogs/popular-blogs.component';
 
 
 const routes: Routes = [

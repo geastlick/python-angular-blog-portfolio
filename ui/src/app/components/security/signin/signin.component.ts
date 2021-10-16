@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { UserService } from '../services/users.service';
+import { UserService } from '../../../services/users.service';
 
 @Component({
     selector: 'app-signin',
@@ -31,7 +31,6 @@ export class SigninComponent implements OnInit {
                     this.status.emit((result ? "Log In Success" : "Log In Failure"))
                 }
             );
-
     }
 
 }
