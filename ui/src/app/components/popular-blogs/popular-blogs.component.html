@@ -1,6 +1,6 @@
 <h2>Popular Blogs</h2><hr />
-<div class="fluid grid">
-    <div class="col-4" *ngFor="let blog of popularBlogs">
+<div class="grid">
+    <div class="xl:col-3 md:col-4 sm:col-6" *ngFor="let blog of popularBlogs">
         <app-blog-card [blog]="blog"></app-blog-card>
     </div>
 </div>

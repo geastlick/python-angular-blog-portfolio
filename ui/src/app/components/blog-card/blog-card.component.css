@@ -1,0 +1,15 @@
+.card {
+    height: 100%;
+    display: flex;
+}
+
+.card-content {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.card-footer {
+    align-self: flex-end;
+    flex: 1 1 auto;
+}

@@ -5,9 +5,16 @@
             <div class="col-5">{{blog.category}}</div>
             <div class="col-7">
                 <div *ngIf="blog.avatar == null; then thenBlock else elseBlock"></div>
-                    <ng-template #thenBlock><p-avatar icon="pi pi-user" shape="circle"></p-avatar></ng-template>
-                    <ng-template #elseBlock><p-avatar [label]="blog.avatar" shape="circle"></p-avatar></ng-template>
+                <ng-template #thenBlock>
+                    <p-avatar icon="pi pi-user" shape="circle"></p-avatar>
+                </ng-template>
+                <ng-template #elseBlock>
+                    <p-avatar [label]="blog.avatar" shape="circle"></p-avatar>
+                </ng-template>
                 {{blog.author}}
+            </div>
+            <div class="col-12">
+                <p-rating [ngModel]="blog.stars_avg" readonly="true" [cancel]="false" class="box mx-auto"></p-rating>
             </div>
         </div>
     </ng-template>
