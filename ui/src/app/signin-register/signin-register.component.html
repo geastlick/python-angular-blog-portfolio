@@ -1,0 +1,10 @@
+<p-dialog [(visible)]="display" [modal]=true [showHeader]=false >
+    <p-tabView>
+        <p-tabPanel header="Log In">
+            <app-signin (status)="onSigninStatus($event)"></app-signin>
+        </p-tabPanel>
+        <p-tabPanel header="Register">
+            <app-register (status)="onRegisterStatus($event)"></app-register>
+        </p-tabPanel>
+    </p-tabView>
+</p-dialog>

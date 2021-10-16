@@ -1,20 +1,13 @@
-<p-splitter [panelSizes]="[10,80,10]" layout="vertical">
+<p-panel >
     <ng-template pTemplate="header">
         <app-header></app-header>
     </ng-template>
     <ng-template pTemplate="body">
-        <p-splitter [panelSizes]="[10,90]">
-            <ng-template pTemplate="left-nav">
-                <app-left-nav></app-left-nav>
-            </ng-template>
-            <ng-template pTemplate="content">
-                <router-outlet>loading...</router-outlet>
-            </ng-template>
-        </p-splitter>
+        <p-scrollPanel [style]="{height: '800px'}">
+            <router-outlet></router-outlet>
+        </p-scrollPanel>
     </ng-template>
     <ng-template pTemplate="footer">
-        <div class="p-grid p-ai-end vertical-container">
-            <app-footer></app-footer>
-        </div>
+        <app-footer></app-footer>
     </ng-template>
-</p-splitter>
+</p-panel>

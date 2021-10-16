@@ -27,10 +27,14 @@ def create():
     if 'name' not in request.json or 'email' not in request.json:
         # name and email must both be present
         return abort(400)
-    t = User.query.filter_by(username=request.json['username']).first()
+    t = User.query.filter(User.username == request.json['username']).first()
     if t is not None:
         # duplicate username -- not allowed
-        return abort(400)
+        return jsonify({"error": "Duplicate username"})
+    t = User.query.filter(User.email == request.json['email']).first()
+    if t is not None:
+        # duplicate email -- not allowed
+        return jsonify({"error": "Duplicate email"})
     # construct User
     u = User(
         username=request.json['username'],
@@ -40,7 +44,7 @@ def create():
     )
     db.session.add(u)  # prepare CREATE statement
     db.session.commit()  # execute CREATE statement
-    return jsonify(u.serialize())
+    return jsonify({"success": u.serialize()})
 
 
 @bp.route('/<int:id>', methods=['DELETE'])

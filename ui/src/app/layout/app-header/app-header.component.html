@@ -1,1 +1,5 @@
-<p>app-header works!</p>
+<p-menubar [model]="items">
+    <button pButton [label]="buttonText" icon="pi pi-sign-in" (click)="handleLogOnOff($event)"></button>
+</p-menubar>
+<app-signin-register [display]="loginVisible" (result)="signinResult($event)"></app-signin-register>
+<p-confirmDialog [closable]="false"></p-confirmDialog>

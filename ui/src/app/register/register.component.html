@@ -1,0 +1,38 @@
+<form [formGroup]="registerForm">
+    <div class="fluid">
+        <div class="field grid">
+            <label for="username" class="col-4 mb-2 md-2 mb-md-0">Username: </label>
+            <div class="col-8 md-10">
+                <input id="username" type="text" formControlName="username" pInputText>
+            </div>
+        </div>
+        <div class="field grid">
+            <label for="password" class="col-4 mb-2 md-2 mb-md-0">Password: </label>
+            <div class="col-8 md-10">
+                <input id="password" type="password" formControlName="password" pInputText>
+            </div>
+        </div>
+        <div class="field grid">
+            <label for="password_confirm" class="col-4 mb-2 md-2 mb-md-0">Confirm Password: </label>
+            <div class="col-8 md-10">
+                <input id="password_confirm" type="password" formControlName="password_confirm" pInputText>
+            </div>
+        </div>
+        <div class="field grid">
+            <label for="name" class="col-4 mb-2 md-2 mb-md-0">Name: </label>
+            <div class="col-8 md-10">
+                <input id="name" type="text" formControlName="name" pInputText>
+            </div>
+        </div>
+        <div class="field grid">
+            <label for="email" class="col-4 mb-2 md-2 mb-md-0">Email: </label>
+            <div class="col-8 md-10">
+                <input id="email" type="text" formControlName="email" pInputText>
+            </div>
+        </div>
+        <div class="grid">
+            <p-button label="Cancel" (onClick)="handleCancel()"></p-button>
+            <p-button label="Register" (onClick)="handleRegister()"></p-button>
+        </div>
+    </div>
+</form>

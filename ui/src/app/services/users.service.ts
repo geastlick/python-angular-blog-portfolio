@@ -40,4 +40,13 @@ export class UserService {
             catchError(this.handleError('logout', false))
         );
   }
+
+  register(username: string, password: string, name: string, email: string): Observable<any> {
+    const data: any = {username: username, password: password, name: name, email: email};
+    return this.http.post<any>('api/users', data, httpOptions)
+      .pipe(
+          catchError(this.handleError('login', false))
+      );
+  }
 }
+

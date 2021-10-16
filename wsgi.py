@@ -21,6 +21,7 @@ def login():
         return abort(400)
     if user.verify(request.json['password']):
         session['username'] = user.username
+        session['userid'] = user.id
         return jsonify(True)
     return jsonify(False)
 
@@ -29,17 +30,19 @@ def login():
 def logout():
     # remove the username from the session if it is there
     session.pop('username', None)
+    session.pop('userid', None)
     return jsonify(True)
 
 
 @app.route('/self')
 def self():
-    if "username" not in session:
+    if "username" not in session or "userid" not in session:
         return abort(400)
-    user = User.query.filter_by(username=session['username']).first()
+    user = User.query.get(session['userid'])
     if user is None:
         # This is a security issue ... username set in the session for an invalid user!
         session.pop('username', None)
+        session.pop('userid', None)
         return abort(400)
     return jsonify(user.serialize())
 

@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
 
-import { MessageService } from './message.service';
+import { ErrorMessageService } from './error-message.service';
 
 /** Type of the handleError function returned by HttpErrorHandler.createHandleError */
 export type HandleError =
@@ -12,7 +12,7 @@ export type HandleError =
 /** Handles HttpClient errors */
 @Injectable()
 export class HttpErrorHandler {
-  constructor(private messageService: MessageService) { }
+  constructor(private messageService: ErrorMessageService) { }
 
   /** Create curried handleError function that already knows the service name */
   createHandleError = (serviceName = '') => {

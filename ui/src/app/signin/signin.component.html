@@ -1,0 +1,20 @@
+<form [formGroup]="signinForm">
+    <div class="fluid">
+        <div class="field grid">
+            <label for="username" class="col-4 mb-2 md-2 mb-md-0">Username:</label>
+            <div class="col-8 md-10">
+                <input id="username" type="text" formControlName="username" pInputText>
+            </div>
+        </div>
+        <div class="field grid">
+            <label for="password" class="col-4 mb-2 md-2 mb-md-0">Password:</label>
+            <div class="col-8 md-10">
+                <input id="password" type="password" formControlName="password" pInputText>
+            </div>
+        </div>
+        <div class="grid">
+            <p-button label="Cancel" (onClick)="handleCancel()"></p-button>
+            <p-button label="Sign In" (onClick)="handleSignIn()"></p-button>
+        </div>
+    </div>
+</form>
