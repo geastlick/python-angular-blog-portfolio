@@ -19,6 +19,9 @@ import {InputTextModule} from 'primeng/inputtext';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {ConfirmPopupModule} from 'primeng/confirmpopup';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {CardModule} from 'primeng/card';
+import {AvatarModule} from 'primeng/avatar';
+
 
 import { AppHeaderComponent } from './components/layout/app-header/app-header.component';
 import { AppFooterComponent } from './components/layout/app-footer/app-footer.component';
@@ -63,6 +66,8 @@ import { BlogService } from './services/blogs.service';
     InputTextareaModule,
     ConfirmPopupModule,
     ConfirmDialogModule,
+    CardModule,
+    AvatarModule,
   ],
   providers: [
       UserService,
