@@ -1,9 +1,18 @@
 import os
+import decimal
+import json
 from flask import Flask
 from flask_migrate import Migrate
 
 # https://flask.palletsprojects.com/en/2.0.x/patterns/appfactories/
 
+class CustomJsonEncoder(json.JSONEncoder):
+
+    def default(self, obj):
+        if isinstance(obj, decimal.Decimal):
+            # Convert decimal instances to strings.
+            return str(obj)
+        return super(CustomJsonEncoder, self).default(obj)
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -14,6 +23,7 @@ def create_app(test_config=None):
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
         SQLALCHEMY_ECHO=True
     )
+    app.json_encoder = CustomJsonEncoder
 
     if test_config is None:
         # load the instance config, if it exists, when not testing

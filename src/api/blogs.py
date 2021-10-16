@@ -1,5 +1,5 @@
 from os import name
-from sqlalchemy import func
+from sqlalchemy import func, case
 from flask import Blueprint, jsonify, abort, request
 from ..models import User, db, Blog, BlogRating, Rating, BlogCategory
 
@@ -12,7 +12,14 @@ def popular_blogs():
     q = (
         db.session.query(Blog.id, Blog.title, Blog.description, BlogCategory.name.label('category_name'),
                          User.name.label('author_name'), User.avatar,
-                         func.sum(Rating.stars-3).label('sum_stars'))
+                         func.avg(Rating.stars).label('avg_stars'),
+                         func.sum(Rating.stars-3).label('sum_stars'),
+                         func.sum(case(value=Rating.stars, whens={1: 1}, else_=0)).label('stars_1'),
+                         func.sum(case(value=Rating.stars, whens={2: 1}, else_=0)).label('stars_2'),
+                         func.sum(case(value=Rating.stars, whens={3: 1}, else_=0)).label('stars_3'),
+                         func.sum(case(value=Rating.stars, whens={4: 1}, else_=0)).label('stars_4'),
+                         func.sum(case(value=Rating.stars, whens={5: 1}, else_=0)).label('stars_5')
+                        )
         .select_from(Blog)
         .join(BlogRating)
         .join(Rating)
@@ -30,6 +37,12 @@ def popular_blogs():
             "description": blog.description,
             "category": blog.category_name,
             "author": blog.author_name,
-            "avatar": blog.avatar
+            "avatar": blog.avatar,
+            "stars_avg": blog.avg_stars,
+            "stars_1": blog.stars_1,
+            "stars_1": blog.stars_2,
+            "stars_1": blog.stars_3,
+            "stars_1": blog.stars_4,
+            "stars_1": blog.stars_5
         })
     return jsonify(result)
