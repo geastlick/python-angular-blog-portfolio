@@ -1,4 +1,4 @@
-from flask import Flask, session, jsonify, abort, request
+from flask import session, jsonify, abort, request
 from src import create_app
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from werkzeug.wrappers import Response

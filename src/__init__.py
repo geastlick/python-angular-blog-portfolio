@@ -2,10 +2,13 @@ import os
 import json
 import decimal
 import datetime
-from flask import Flask
+from http import HTTPStatus
+from typing import Optional
+from flask import Flask, request, redirect, url_for, Response
 from flask_migrate import Migrate
 
 # https://flask.palletsprojects.com/en/2.0.x/patterns/appfactories/
+
 
 class CustomJsonEncoder(json.JSONEncoder):
     """ serialize common types """
@@ -18,8 +21,24 @@ class CustomJsonEncoder(json.JSONEncoder):
             return obj.isoformat()
         return super(CustomJsonEncoder, self).default(obj)
 
+
+""" Not working
+def http_redirect() -> Optional[Response]:
+    print("In redirect")
+    if request.scheme == 'https':
+        return redirect(url_for(request.endpoint,
+                                _scheme='http',
+                                _external=True),
+                        HTTPStatus.PERMANENT_REDIRECT)
+"""
+
+
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
+    """
+    if app.env != 'production':
+        app.before_request(http_redirect)
+    """
     app.secret_key = 'ShouldBeHidden!'
     app.config.from_mapping(
         SECRET_KEY='dev',

@@ -6,6 +6,7 @@ import { catchError, retry } from 'rxjs/operators';
 
 import { HttpErrorHandler, HandleError } from './http-error-handler.service';
 import { Blog } from '../interfaces/blog';
+import { BlogEntry } from '../interfaces/blog-entry';
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -17,7 +18,7 @@ const httpOptions = {
     providedIn: 'root'
 })
 export class BlogService {
-    private blogsUrl = 'api/blogs';
+    private apiUrl = 'api/blogs';
     private handleError: HandleError;
 
     constructor(
@@ -26,10 +27,24 @@ export class BlogService {
         this.handleError = httpErrorHandler.createHandleError('BlogService');
     }
 
+    by_id(id: number): Observable<Blog> {
+        return this.http.get<Blog>(this.apiUrl + '/' + id, httpOptions)
+        .pipe(
+            catchError(this.handleError('self', <Blog>{}))
+        );
+    }
+
     popular(): Observable<[Blog]> {
-        return this.http.get<[Blog]>(this.blogsUrl + '/popular', httpOptions)
+        return this.http.get<[Blog]>(this.apiUrl + '/popular', httpOptions)
         .pipe(
             catchError(this.handleError('self', <[Blog]>{}))
+        );
+      }
+
+      entries(): Observable<[BlogEntry]> {
+        return this.http.get<[BlogEntry]>(this.apiUrl + '/entries', httpOptions)
+        .pipe(
+            catchError(this.handleError('self', <[BlogEntry]>{}))
         );
       }
 
