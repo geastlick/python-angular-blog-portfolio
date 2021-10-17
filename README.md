@@ -26,98 +26,112 @@ Portfolio project created during NuCamp Python-SQL bootcamp
 
 ## API
 
-| Endpoint | Methods | Rule | Request | Response | Description |
-| -------- | ------- | ---- | ------- | -------- | ----------- |
-| login    | POST    | /login | {username: str, password: str} |
-* HTTP Status 400 if username or password are missing
-* HTTP Status 404 if username does not exist
-* True if logon was successful, else False | Creates Session in Flask |
-
-<table>
-<tbody>
-        <tr>
-            <td>authors.popular_authors</td>
-            <td>GET</td>
-            <td>/authors/popular</td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>blog-entries.blog_entry_by_id</td>
-            <td>GET</td>
-            <td>/blog-entries/<int:id>
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>blogs.blog_by_id</td>
-            <td>GET</td>
-            <td>/blogs/<int:id>
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>blogs.blog_entries_for_blog_id</td>
-            <td>GET</td>
-            <td>/blogs/<int:id>/entries</td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>blogs.popular_blogs</td>
-            <td>GET</td>
-            <td>/blogs/popular</td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>logout</td>
-            <td>GET</td>
-            <td>/logout</td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>self</td>
-            <td>GET</td>
-            <td>/self</td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>users.create</td>
-            <td>POST</td>
-            <td>/users</td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>users.delete</td>
-            <td>DELETE</td>
-            <td>/users/<int:id>
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>users.update</td>
-            <td>PATCH, PUT</td>
-            <td>/users/<int:id>
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+    <table>
+        <tbody>
+            <tr>
+                <th>Endpoint</th>
+                <th>Methods</th>
+                <th>Rule</th>
+                <th>Request</th>
+                <th>Response</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>login</td>
+                <td>POST</td>
+                <td>/login</td>
+                <td>{username: str, password: str}</td>
+                <td>
+                    <ul>
+                        <li>HTTP Status 400 if username or password are missing</li>
+                        <li>HTTP Status 404 if username does not exist</li>
+                        <li>True if logon was successful, else False</li>
+                </td>
+                <td>Creates Session in Flask</td>
+            </tr>
+            <tr>
+                <td>authors.popular_authors</td>
+                <td>GET</td>
+                <td>/authors/popular</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>blog-entries.blog_entry_by_id</td>
+                <td>GET</td>
+                <td>/blog-entries/<int:id>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>blogs.blog_by_id</td>
+                <td>GET</td>
+                <td>/blogs/<int:id>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>blogs.blog_entries_for_blog_id</td>
+                <td>GET</td>
+                <td>/blogs/<int:id>/entries</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>blogs.popular_blogs</td>
+                <td>GET</td>
+                <td>/blogs/popular</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>logout</td>
+                <td>GET</td>
+                <td>/logout</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>self</td>
+                <td>GET</td>
+                <td>/self</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>users.create</td>
+                <td>POST</td>
+                <td>/users</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>users.delete</td>
+                <td>DELETE</td>
+                <td>/users/<int:id>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>users.update</td>
+                <td>PATCH, PUT</td>
+                <td>/users/<int:id>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
         </tbody>
     </table>
