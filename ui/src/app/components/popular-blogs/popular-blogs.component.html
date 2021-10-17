@@ -1,4 +1,8 @@
 <h2>Popular Blogs</h2><hr />
+<p-paginator [rows]="blogPageSize" [totalRecords]="blogCount" (onPageChange)="paginate($event)"
+[rowsPerPageOptions]="[5,10,20,30,{showAll:'All'}]"
+[showJumpToPageDropdown]="true" [showPageLinks]="false"
+></p-paginator>
 <div class="grid">
     <div class="xl:col-3 md:col-4 sm:col-6" *ngFor="let blog of popularBlogs">
         <a [routerLink]="['/blogs', blog.id]"><app-blog-card [blog]="blog"></app-blog-card></a>

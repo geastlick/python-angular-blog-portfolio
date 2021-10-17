@@ -6,7 +6,8 @@ import { catchError, retry } from 'rxjs/operators';
 
 import { HttpErrorHandler, HandleError } from './http-error-handler.service';
 import { Blog } from '../interfaces/blog';
-import { BlogEntry } from '../interfaces/blog-entry';
+import { BlogPaginated } from '../interfaces/blog-paginated';
+import { BlogEntryPaginated } from '../interfaces/blog-entry-paginated';
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -34,17 +35,31 @@ export class BlogService {
         );
     }
 
-    popular(): Observable<[Blog]> {
-        return this.http.get<[Blog]>(this.apiUrl + '/popular', httpOptions)
+    popular(pagesize:number = 0, page:number = 0): Observable<[BlogPaginated]> {
+        let queryParam = "";
+        if (pagesize > 0) {
+            queryParam += "?page_size=" + pagesize;
+            if (page > 0) {
+                queryParam += "&page=" + page
+            }
+        }
+        return this.http.get<[BlogPaginated]>(this.apiUrl + '/popular' + queryParam, httpOptions)
         .pipe(
-            catchError(this.handleError('self', <[Blog]>{}))
+            catchError(this.handleError('self', <[BlogPaginated]>{}))
         );
       }
 
-      entries(id: number): Observable<[BlogEntry]> {
-        return this.http.get<[BlogEntry]>(this.apiUrl + '/' + id + '/entries', httpOptions)
+      entries(id: number, pagesize:number = 0, page:number = 0): Observable<[BlogEntryPaginated]> {
+        let queryParam = "";
+        if (pagesize > 0) {
+            queryParam += "?page_size=" + pagesize;
+            if (page > 0) {
+                queryParam += "&page=" + page
+            }
+        }
+        return this.http.get<[BlogEntryPaginated]>(this.apiUrl + '/' + id + '/entries' + queryParam, httpOptions)
         .pipe(
-            catchError(this.handleError('self', <[BlogEntry]>{}))
+            catchError(this.handleError('self', <[BlogEntryPaginated]>{}))
         );
       }
 

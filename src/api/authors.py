@@ -17,12 +17,13 @@ def popular_authors():
                          )
         .select_from(User)
         .join(Blog, Blog.author == User.id)
-        .join(BlogRating)
-        .join(Rating)
+        .outerjoin(BlogRating)
+        .outerjoin(Rating)
         .where(Blog.published != None)
         .group_by(User.id, User.name, User.avatar)
         .order_by('stars_sum', User.name)
     )
+    count = authors.count()
     if request.args.get('page_size') is not None:
         page_size = int(request.args.get('page_size'))
         authors = authors.limit(page_size)
@@ -38,8 +39,8 @@ def popular_authors():
                          func.avg(Rating.stars).label("blog_stars_avg"))
         .select_from(authors_cte)
         .join(Blog)
-        .join(BlogRating)
-        .join(Rating)
+        .outerjoin(BlogRating)
+        .outerjoin(Rating)
         .where(Blog.published != None)
         .group_by(authors_cte.c.id, authors_cte.c.stars_sum, authors_cte.c.name, Blog.id, Blog.title)
         .order_by(authors_cte.c.stars_sum, authors_cte.c.name, Blog.title)
@@ -62,4 +63,4 @@ def popular_authors():
             "stars_avg": author.stars_avg,
             "blogs": author_blogs
         })
-    return jsonify(result)
+    return jsonify({"count_all_authors": count, "authors": result})

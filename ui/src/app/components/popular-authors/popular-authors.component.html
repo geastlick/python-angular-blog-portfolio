@@ -1,3 +1,8 @@
+<p-paginator [rows]="authorPageSize" [totalRecords]="authorCount" (onPageChange)="paginate($event)"
+[rowsPerPageOptions]="[5,10,20,30,{showAll:'All'}]"
+[showJumpToPageDropdown]="true" [showPageLinks]="false"
+></p-paginator>
+
 <p-table [value]="popularAuthors">
     <ng-template pTemplate="header">
         <tr>

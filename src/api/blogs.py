@@ -31,14 +31,15 @@ def popular_blogs():
                                   5: 1}, else_=0)).label('stars_5')
                          )
         .select_from(Blog)
-        .join(BlogRating)
-        .join(Rating)
+        .outerjoin(BlogRating)
+        .outerjoin(Rating)
         .join(BlogCategory)
         .join(User, User.id == Blog.author)
         .filter(Blog.published != None)
         .group_by(Blog.id, Blog.title, Blog.description, BlogCategory.name, Blog.published, User.name, User.avatar)
         .order_by('sum_stars')
     )
+    count_blogs = q.count()
     if request.args.get('page_size') is not None:
         page_size = int(request.args.get('page_size'))
         q = q.limit(page_size)
@@ -62,7 +63,7 @@ def popular_blogs():
             "stars_4": blog.stars_4,
             "stars_5": blog.stars_5
         })
-    return jsonify(result)
+    return jsonify({"count_all_blogs": count_blogs, "blogs": result})
 
 
 @bp.route('/<int:id>', methods=['GET'])
@@ -86,8 +87,8 @@ def blog_by_id(id: int):
                                   5: 1}, else_=0)).label('stars_5')
                          )
         .select_from(Blog)
-        .join(BlogRating)
-        .join(Rating)
+        .outerjoin(BlogRating)
+        .outerjoin(Rating)
         .join(BlogCategory)
         .join(User, User.id == Blog.author)
         .filter(Blog.id == id)
@@ -131,11 +132,12 @@ def blog_entries_for_blog_id(id: int):
                                   5: 1}, else_=0)).label('stars_5')
                          )
         .select_from(BlogEntry)
-        .join(BlogEntryRating)
-        .join(Rating)
+        .outerjoin(BlogEntryRating)
+        .outerjoin(Rating)
         .filter(BlogEntry.published != None, BlogEntry.blog == id)
         .group_by(BlogEntry.id, BlogEntry.entry, BlogEntry.published)
     )
+    entry_count = q.count()
     if request.args.get('page_size') is not None:
         page_size = int(request.args.get('page_size'))
         q = q.limit(page_size)
@@ -155,4 +157,4 @@ def blog_entries_for_blog_id(id: int):
             "stars_4": blogEntry.stars_4,
             "stars_5": blogEntry.stars_5
         })
-    return jsonify(result)
+    return jsonify({"count_all_entries": entry_count, "blog_entries": result})
