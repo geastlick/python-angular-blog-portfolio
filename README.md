@@ -25,29 +25,13 @@ Portfolio project created during NuCamp Python-SQL bootcamp
     * *Various other supporting libraries mentioned in package.json*
 
 ## API
-    <table>
-        <tr>
-            <th>Endpoint</th>
-            <th>Methods</th>
-            <th>Rule</th>
-            <th>Request</th>
-            <th>Response</th>
-            <th>Description</th>
-        </tr>
-        <tr>
-            <td>login</td>
-            <td>POST</td>
-            <td>/login</td>
-            <td>{username: str, password: str}</td>
-            <td>
-                <ul>
-                    <li>HTTP Status 400 if username or password are missing</li>
-                    <li>HTTP Status 404 if username does not exist</li>
-                    <li>True if logon was successful, else False</li>
-                </ul>
-            </td>
-            <td>Creates Session in Flask</td>
-        </tr>
+
+| Endpoint | Methods | Rule | Request | Response | Description |
+| -------- | ------- | ---- | ------- | -------- | ----------- |
+| login    | POST    | /login | {username: str, password: str} |
+* HTTP Status 400 if username or password are missing
+* HTTP Status 404 if username does not exist
+* True if logon was successful, else False | Creates Session in Flask |
 
 
         <tr>
