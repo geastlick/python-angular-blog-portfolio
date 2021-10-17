@@ -14,7 +14,12 @@
                 {{blog.author}}
             </div>
             <div class="col-12">
-                <p-rating [ngModel]="blog.stars_avg" readonly="true" [cancel]="false" class="box mx-auto"></p-rating>
+                <div *ngIf="blog.stars_avg != null;then content else nullBlock"></div>
+                <ng-template #content>
+                    <p-rating [ngModel]="blog.stars_avg" readonly="true" [cancel]="false" class="box mx-auto">
+                    </p-rating>
+                </ng-template>
+                <ng-template #nullBlock>Not rated</ng-template>
             </div>
         </div>
     </ng-template>

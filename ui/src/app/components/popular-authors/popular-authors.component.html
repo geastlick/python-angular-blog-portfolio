@@ -1,7 +1,6 @@
 <p-paginator [rows]="authorPageSize" [totalRecords]="authorCount" (onPageChange)="paginate($event)"
-[rowsPerPageOptions]="[5,10,20,30,{showAll:'All'}]"
-[showJumpToPageDropdown]="true" [showPageLinks]="false"
-></p-paginator>
+    [rowsPerPageOptions]="[5,10,20,30,{showAll:'All'}]" [showJumpToPageDropdown]="true" [showPageLinks]="false">
+</p-paginator>
 
 <p-table [value]="popularAuthors">
     <ng-template pTemplate="header">
@@ -30,8 +29,12 @@
                 <div class="grid" *ngFor='let blog of author.blogs'>
                     <div class="col-8"><a [routerLink]="['/blogs', blog.id]">{{blog.title}}</a></div>
                     <div class="col-4">
-                        <p-rating [ngModel]="blog.blog_stars_avg" readonly="true" [cancel]="false" class="box mx-auto">
-                        </p-rating>
+                        <div *ngIf="blog.blog_stars_avg != null;then content else nullBlock"></div>
+                        <ng-template #content>
+                            <p-rating [ngModel]="blog.blog_stars_avg" [readonly]="true" [cancel]="false"
+                                class="box mx-auto"></p-rating>
+                        </ng-template>
+                        <ng-template #nullBlock>Not rated</ng-template>
                     </div>
                 </div>
             </td>
