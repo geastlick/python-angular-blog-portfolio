@@ -33,7 +33,8 @@ Portfolio project created during NuCamp Python-SQL bootcamp
 * HTTP Status 404 if username does not exist
 * True if logon was successful, else False | Creates Session in Flask |
 
-
+<table>
+<tbody>
         <tr>
             <td>authors.popular_authors</td>
             <td>GET</td>
@@ -118,4 +119,5 @@ Portfolio project created during NuCamp Python-SQL bootcamp
             <td></td>
             <td></td>
         </tr>
+        </tbody>
     </table>
