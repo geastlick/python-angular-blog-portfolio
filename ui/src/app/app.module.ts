@@ -20,6 +20,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
 import { AvatarModule } from 'primeng/avatar';
 import { RatingModule } from 'primeng/rating';
@@ -76,6 +77,7 @@ import { PopularAuthorsComponent } from './components/popular-authors/popular-au
         InputTextareaModule,
         ConfirmPopupModule,
         ConfirmDialogModule,
+        TableModule,
         CardModule,
         AvatarModule,
         RatingModule,

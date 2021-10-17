@@ -3,4 +3,9 @@ export interface Author {
     'name': string,
     'avatar': string,
     'stars_avg': number,
+    'blogs': [{
+        'id': number,
+        'title': string,
+        'blog_stars_avg': number
+    }]
 }

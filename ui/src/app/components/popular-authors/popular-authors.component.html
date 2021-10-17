@@ -1,19 +1,39 @@
-<ul *ngFor="let author of popularAuthors">
-    <li style="list-style-type:none">
-        <div class="grid">
-            <div class="col-2">
+<p-table [value]="popularAuthors">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Rating</th>
+            <th>Author</th>
+            <th>Blogs</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-author>
+        <tr>
+            <td>
                 <p-rating [ngModel]="author.stars_avg" readonly="true" [cancel]="false" class="box mx-auto"></p-rating>
-            </div>
-            <div class="col-10">
-            <div *ngIf="author.avatar == null; then thenBlock else elseBlock"></div>
-            <ng-template #thenBlock>
-                <p-avatar icon="pi pi-user" shape="circle"></p-avatar>
-            </ng-template>
-            <ng-template #elseBlock>
-                <p-avatar [label]="author.avatar" shape="circle"></p-avatar>
-            </ng-template>
-            {{author.name}}
-        </div>
-    </div>
-    </li>
-</ul>
+            </td>
+            <td>
+                <div *ngIf="author.avatar == null; then thenBlock else elseBlock"></div>
+                <ng-template #thenBlock>
+                    <p-avatar icon="pi pi-user" shape="circle"></p-avatar>
+                </ng-template>
+                <ng-template #elseBlock>
+                    <p-avatar [label]="author.avatar" shape="circle"></p-avatar>
+                </ng-template>
+                {{author.name}}
+            </td>
+            <td>
+                <p-table [value]="author.blogs">
+                    <ng-template pTemplate="body" let-blog>
+        <tr>
+            <td>{{blog.title}}</td>
+            <td>
+                <p-rating [ngModel]="blog.blog_stars_avg" readonly="true" [cancel]="false" class="box mx-auto">
+                </p-rating>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+</td>
+</tr>
+</ng-template>
+</p-table>
