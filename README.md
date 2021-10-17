@@ -26,7 +26,7 @@ Portfolio project created during NuCamp Python-SQL bootcamp
 
 ## API
 
-    <table>
+|    <table>
         <tbody>
             <tr>
                 <th>Endpoint</th>
