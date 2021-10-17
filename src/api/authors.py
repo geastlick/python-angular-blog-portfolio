@@ -49,7 +49,6 @@ def popular_authors():
     current_blog = 0
     for author in authors.all():
         author_blogs = []
-        print("Author", author.id, "Blog", blogs_all[current_blog].id)
         while current_blog < len(blogs_all) and blogs_all[current_blog].id == author.id:
             author_blogs.append({"id": blogs_all[current_blog].blog_id,
                                  "title": blogs_all[current_blog].title,

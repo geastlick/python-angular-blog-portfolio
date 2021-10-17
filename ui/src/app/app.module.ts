@@ -24,6 +24,7 @@ import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
 import { AvatarModule } from 'primeng/avatar';
 import { RatingModule } from 'primeng/rating';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 
 
 import { AppHeaderComponent } from './components/layout/app-header/app-header.component';
@@ -81,6 +82,7 @@ import { PopularAuthorsComponent } from './components/popular-authors/popular-au
         CardModule,
         AvatarModule,
         RatingModule,
+        ProgressSpinnerModule,
     ],
     providers: [
         UserService,

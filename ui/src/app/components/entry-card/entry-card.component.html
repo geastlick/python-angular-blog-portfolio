@@ -1,8 +1,12 @@
 <p-card [style]="{'height': '100%'}">
     <ng-template pTemplate="content">
-        {{entry.entry}}
-        <div class="col-12">
-            <p-rating [ngModel]="entry.stars_avg" readonly="true" [cancel]="false" class="box mx-auto"></p-rating>
+        <div class="grid">
+            <div class="col-10">
+                {{entry.entry}}
+            </div>
+            <div class="col-2">
+                <p-rating [ngModel]="entry.stars_avg" readonly="true" [cancel]="false" class="box mx-auto"></p-rating>
+            </div>
         </div>
     </ng-template>
 </p-card>

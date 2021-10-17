@@ -7,9 +7,9 @@ import { PopularBlogsComponent } from './components/popular-blogs/popular-blogs.
 
 const routes: Routes = [
     { path: '', pathMatch: 'full', component: PopularBlogsComponent },
-    { path: 'blogs/:id', component: BlogComponent },
     { path: 'blogs/popular', component: PopularBlogsComponent },
     { path: 'authors/popular', component: PopularAuthorsComponent },
+    { path: 'blogs/:id', component: BlogComponent },
 ];
 
 @NgModule({

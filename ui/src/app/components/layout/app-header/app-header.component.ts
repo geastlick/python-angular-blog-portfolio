@@ -20,10 +20,22 @@ export class AppHeaderComponent implements OnInit {
     ngOnInit(): void {
         this.items = [
             {
-                label: 'Authors', icon: PrimeIcons.USER
+                label: 'Authors', icon: PrimeIcons.USER,
+                items: [
+                    {
+                        label: 'Popular',
+                        routerLink: ['/authors/popular']
+                    }
+                ]
             },
             {
-                label: 'Blogs', icon: PrimeIcons.BOOK
+                label: 'Blogs', icon: PrimeIcons.BOOK,
+                items: [
+                    {
+                        label: 'Popular',
+                        routerLink: ['/blogs/popular']
+                    }
+                ]
             }
         ]
     }

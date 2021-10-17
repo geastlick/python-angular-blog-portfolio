@@ -10,9 +10,13 @@ bp = Blueprint('blogs', __name__, url_prefix='/blogs')
 def popular_blogs():
     """Blogs ordered by popularity"""
     q = (
-        db.session.query(Blog.id, Blog.title, Blog.description, BlogCategory.name.label('category_name'),
-                         Blog.published, User.name.label(
-                             'author_name'), User.avatar,
+        db.session.query(Blog.id.label('id'),
+                         Blog.title.label('title'),
+                         Blog.description.label('description'),
+                         BlogCategory.name.label('category_name'),
+                         Blog.published.label('published'),
+                         User.name.label('author_name'),
+                         User.avatar.label('avatar'),
                          func.avg(Rating.stars).label('avg_stars'),
                          func.sum(Rating.stars-3).label('sum_stars'),
                          func.sum(case(value=Rating.stars, whens={
@@ -110,7 +114,9 @@ def blog_by_id(id: int):
 def blog_entries_for_blog_id(id: int):
     """Blog Entries (published) for a blog"""
     q = (
-        db.session.query(BlogEntry.id, BlogEntry.entry, BlogEntry.published,
+        db.session.query(BlogEntry.id.label('id'),
+                         BlogEntry.entry.label('entry'),
+                         BlogEntry.published.label('published'),
                          func.avg(Rating.stars).label('avg_stars'),
                          func.sum(Rating.stars-3).label('sum_stars'),
                          func.sum(case(value=Rating.stars, whens={
@@ -127,7 +133,7 @@ def blog_entries_for_blog_id(id: int):
         .select_from(BlogEntry)
         .join(BlogEntryRating)
         .join(Rating)
-        .filter(BlogEntry.published != None and BlogEntry.blog == id)
+        .filter(BlogEntry.published != None, BlogEntry.blog == id)
         .group_by(BlogEntry.id, BlogEntry.entry, BlogEntry.published)
     )
     if request.args.get('page_size') is not None:

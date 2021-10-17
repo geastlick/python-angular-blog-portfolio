@@ -22,18 +22,14 @@
                 {{author.name}}
             </td>
             <td>
-                <p-table [value]="author.blogs">
-                    <ng-template pTemplate="body" let-blog>
-        <tr>
-            <td>{{blog.title}}</td>
-            <td>
-                <p-rating [ngModel]="blog.blog_stars_avg" readonly="true" [cancel]="false" class="box mx-auto">
-                </p-rating>
+                <div class="grid" *ngFor='let blog of author.blogs'>
+                    <div class="col-8"><a [routerLink]="['/blogs', blog.id]">{{blog.title}}</a></div>
+                    <div class="col-4">
+                        <p-rating [ngModel]="blog.blog_stars_avg" readonly="true" [cancel]="false" class="box mx-auto">
+                        </p-rating>
+                    </div>
+                </div>
             </td>
         </tr>
     </ng-template>
-</p-table>
-</td>
-</tr>
-</ng-template>
 </p-table>
