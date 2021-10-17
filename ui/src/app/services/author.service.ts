@@ -5,8 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
 import { HttpErrorHandler, HandleError } from './http-error-handler.service';
-
-import { BlogEntry } from '../interfaces/blog-entry';
+import { Author } from '../interfaces/author';
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -15,22 +14,22 @@ const httpOptions = {
 };
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
-export class BlogEntryService {
-    private apiUrl = 'api/blog-entries';
+export class AuthorService {
+    private apiUrl = 'api/authors';
     private handleError: HandleError;
 
     constructor(
         private http: HttpClient,
         httpErrorHandler: HttpErrorHandler) {
-        this.handleError = httpErrorHandler.createHandleError('BlogEntryService');
+        this.handleError = httpErrorHandler.createHandleError('BlogService');
     }
 
-    by_id(id: number): Observable<BlogEntry> {
-        return this.http.get<BlogEntry>(this.apiUrl + '/' + id, httpOptions)
-            .pipe(
-                catchError(this.handleError('self', <BlogEntry>{}))
-            );
-    }
+    popular(): Observable<[Author]> {
+        return this.http.get<[Author]>(this.apiUrl + '/popular', httpOptions)
+        .pipe(
+            catchError(this.handleError('self', <[Author]>{}))
+        );
+      }
 }

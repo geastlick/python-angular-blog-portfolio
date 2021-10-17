@@ -41,8 +41,8 @@ export class BlogService {
         );
       }
 
-      entries(): Observable<[BlogEntry]> {
-        return this.http.get<[BlogEntry]>(this.apiUrl + '/entries', httpOptions)
+      entries(id: number): Observable<[BlogEntry]> {
+        return this.http.get<[BlogEntry]>(this.apiUrl + '/' + id + '/entries', httpOptions)
         .pipe(
             catchError(this.handleError('self', <[BlogEntry]>{}))
         );

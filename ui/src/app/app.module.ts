@@ -37,6 +37,10 @@ import { SigninRegisterComponent } from './components/security/signin-register/s
 import { PopularBlogsComponent } from './components/popular-blogs/popular-blogs.component';
 import { BlogCardComponent } from './components/blog-card/blog-card.component'
 import { BlogService } from './services/blogs.service';
+import { BlogComponent } from './components/blog/blog.component';
+import { BlogEntryService } from './services/blog-entries.service';
+import { EntryCardComponent } from './components/entry-card/entry-card.component';
+import { PopularAuthorsComponent } from './components/popular-authors/popular-authors.component';
 
 @NgModule({
     declarations: [
@@ -48,7 +52,10 @@ import { BlogService } from './services/blogs.service';
         RegisterComponent,
         SigninRegisterComponent,
         PopularBlogsComponent,
-        BlogCardComponent
+        BlogCardComponent,
+        BlogComponent,
+        EntryCardComponent,
+        PopularAuthorsComponent
     ],
     imports: [
         BrowserModule,
@@ -76,6 +83,7 @@ import { BlogService } from './services/blogs.service';
     providers: [
         UserService,
         BlogService,
+        BlogEntryService,
         HttpErrorHandler,
         ErrorMessageService
     ],

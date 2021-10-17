@@ -1,0 +1,19 @@
+<ul *ngFor="let author of popularAuthors">
+    <li style="list-style-type:none">
+        <div class="grid">
+            <div class="col-2">
+                <p-rating [ngModel]="author.stars_avg" readonly="true" [cancel]="false" class="box mx-auto"></p-rating>
+            </div>
+            <div class="col-10">
+            <div *ngIf="author.avatar == null; then thenBlock else elseBlock"></div>
+            <ng-template #thenBlock>
+                <p-avatar icon="pi pi-user" shape="circle"></p-avatar>
+            </ng-template>
+            <ng-template #elseBlock>
+                <p-avatar [label]="author.avatar" shape="circle"></p-avatar>
+            </ng-template>
+            {{author.name}}
+        </div>
+    </div>
+    </li>
+</ul>

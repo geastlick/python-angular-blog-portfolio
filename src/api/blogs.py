@@ -111,7 +111,7 @@ def blog_entries_for_blog_id(id: int):
         .select_from(BlogEntry)
         .join(BlogEntryRating)
         .join(Rating)
-        .filter(Blog.published is not None)
+        .filter(BlogEntry.published is not None and BlogEntry.blog == id)
         .group_by(BlogEntry.id, BlogEntry.entry, BlogEntry.published)
     )
     if request.args.get('page_size') is not None:
