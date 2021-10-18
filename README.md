@@ -1,12 +1,23 @@
 # python-angular-blog-portfolio
 Portfolio project created during NuCamp Python-SQL bootcamp
 
+* ensure python is install - at least and preferrably 3.9.6
+* cd into the portfolio folder and create a virtual environment: "python -m venv venv"
+* Activate the environment - ". venv/Scripts/activate" (windows), ". venv/bin/activate" (macOS)
+* upgrade pip: "python -m pip install --upgrade pip==21.1.2"
+* install modules from requirements.txt: "python -m pip install -r requirements.txt"
+
+* if you do not have a pre-existing database, you can use Docker Desktop and "docker compose up -d"
+  * This will install Postgresql 13.2 and pgadmin 4.5.2 (http://localhost:5433)
 * update src/__init__.py create_app parameters, specifically the database URI
+  * All database access is via ORM, so in theory, MySQL should also work, but only tested with Postgresql.
 * execute "flask db upgrade".  This will apply all migrations.
 * execute "python seed.py".  This will pre-populate the database tables with fake data.  There is a default user demo/demo for testing.
 * execute "flask run".  This will start the API server.  By default it runs on http://localhost:5000/api/
+
 * You must have nodejs and npm installed
 * execute "cd ui; npm install; ng serve".  This will start the Angular dev server at http://localhost:4200
+  * default login demo/demo, but you can also register other users.
 
 # Technology stack
 

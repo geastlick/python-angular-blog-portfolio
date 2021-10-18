@@ -93,7 +93,7 @@ def blog_by_id(id: int):
         .join(User, User.id == Blog.author)
         .filter(Blog.id == id)
         .group_by(Blog.id, Blog.title, Blog.description, BlogCategory.name, Blog.published, User.name, User.avatar)
-    ).first()
+    ).one()
     return jsonify({
         "id": blog.id,
         "title": blog.title,

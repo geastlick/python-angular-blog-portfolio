@@ -28,7 +28,7 @@ def blog_entry_by_id(id: int):
         .outerjoin(Rating)
         .filter(BlogEntry.id == id)
         .group_by(BlogEntry.id, BlogEntry.entry, BlogEntry.published)
-    ).first()
+    ).one()
     return jsonify({
         "id": blogEntry.id,
         "entry": blogEntry.entry,

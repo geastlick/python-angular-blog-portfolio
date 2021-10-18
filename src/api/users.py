@@ -80,6 +80,10 @@ def update(id: int):
             return abort(400)
         u.username = request.json['username']
     if 'email' in request.json:
+        t = User.query.filter_by(email=request.json['email']).first()
+        if t is not None:
+            # duplicate email -- not allowed
+            return abort(400)
         u.email = request.json['email']
     if 'name' in request.json:
         u.name = request.json['name']
