@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AccordionModule } from 'primeng/accordion';
 import { MenubarModule } from 'primeng/menubar';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { TabViewModule } from 'primeng/tabview';
@@ -24,8 +25,8 @@ import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
 import { AvatarModule } from 'primeng/avatar';
 import { RatingModule } from 'primeng/rating';
-import {ProgressSpinnerModule} from 'primeng/progressspinner';
-import {PaginatorModule} from 'primeng/paginator';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { PaginatorModule } from 'primeng/paginator';
 
 import { AppHeaderComponent } from './components/layout/app-header/app-header.component';
 import { AppFooterComponent } from './components/layout/app-footer/app-footer.component';
@@ -43,6 +44,8 @@ import { BlogComponent } from './components/blog/blog.component';
 import { BlogEntryService } from './services/blog-entries.service';
 import { EntryCardComponent } from './components/entry-card/entry-card.component';
 import { PopularAuthorsComponent } from './components/popular-authors/popular-authors.component';
+import { ResizeService } from './screen-size-detector/resize.service';
+import { SizeDetectorComponent } from './screen-size-detector/size-detector.component';
 
 @NgModule({
     declarations: [
@@ -57,7 +60,8 @@ import { PopularAuthorsComponent } from './components/popular-authors/popular-au
         BlogCardComponent,
         BlogComponent,
         EntryCardComponent,
-        PopularAuthorsComponent
+        PopularAuthorsComponent,
+        SizeDetectorComponent
     ],
     imports: [
         BrowserModule,
@@ -71,6 +75,7 @@ import { PopularAuthorsComponent } from './components/popular-authors/popular-au
         FormsModule,
         AccordionModule,
         MenubarModule,
+        BreadcrumbModule,
         ButtonModule,
         DialogModule,
         TabViewModule,
@@ -90,7 +95,8 @@ import { PopularAuthorsComponent } from './components/popular-authors/popular-au
         BlogService,
         BlogEntryService,
         HttpErrorHandler,
-        ErrorMessageService
+        ErrorMessageService,
+        ResizeService
     ],
     bootstrap: [AppComponent]
 })

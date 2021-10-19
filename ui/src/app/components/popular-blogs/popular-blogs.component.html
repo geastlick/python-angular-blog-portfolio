@@ -1,6 +1,6 @@
 <h2>Popular Blogs</h2><hr />
 <p-paginator [rows]="blogPageSize" [totalRecords]="blogCount" (onPageChange)="paginate($event)"
-[rowsPerPageOptions]="[5,10,20,30,{showAll:'All'}]"
+[rowsPerPageOptions]="rowsPerPage"
 [showJumpToPageDropdown]="true" [showPageLinks]="false"
 ></p-paginator>
 <div class="grid">
@@ -8,3 +8,7 @@
         <a [routerLink]="['/blogs', blog.id]"><app-blog-card [blog]="blog"></app-blog-card></a>
     </div>
 </div>
+<div class="pi pi-comment"></div>
+<div class="pi pi-comments"></div>
+<div class="pi pi-star"></div>
+<div class="pi pi-star-o"></div>
