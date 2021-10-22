@@ -136,6 +136,17 @@ Portfolio project created during NuCamp Python-SQL bootcamp
                 <td>ordered by the ranking of the Authors published blogs.  Only includes authors with at least one published blog and only returns published blogs.  count_all_authors is used for paginating, i.e. (3 {page} - 1) * 10 {page_size} of (80 {count_all_authors} / 10 {page_size})</td>
             </tr>
             <tr>
+                <td>authors.user_follow_author</td>
+                <td>POST</td>
+                <td>/authors/<int:id>/follow</td>
+                <td></td>
+                <td><ul>
+                    <li>Http Status 404 if Author does not exist</li>
+                    <li>Http Status 400 if User is not logged in</li>
+                    <li>True if successfully followed, else false</li>
+                </ul></td>
+            </tr>
+            <tr>
                 <td>blog-entries.blog_entry_by_id</td>
                 <td>GET</td>
                 <td>/blog-entries/<int:id></td>
@@ -167,6 +178,17 @@ Portfolio project created during NuCamp Python-SQL bootcamp
                 <td>Supports request params page_size and page, e.g. /blogs/<int:id>/entries?page_size=10&page=3.  Page will be ignored unless page_size is also present</td>
                 <td>{count_all_blogs: int, blogs: [{id: int, title: str, description: str, category: str, published: datetime, author: str, avatar: str, stars_avg: decimal, stars_1: int, stars_2: int, stars_3: int, stars_4: int, stars_5: int}] }</td>
                 <td>stars_n are the counts of ratings for that value.  stars_avg is the average of all the ratings.  Only includes published blogs in order of their ranking.  count_all_blogs is used for paginating, i.e. (3 {page} - 1) * 10 {page_size} of (80 {count_all_blogs} / 10 {page_size})</td>
+            </tr>
+            <tr>
+                <td>blogs.user_follow_blog</td>
+                <td>POST</td>
+                <td>/blogs/<int:id>/follow</td>
+                <td></td>
+                <td><ul>
+                    <li>Http Status 404 if Author does not exist</li>
+                    <li>Http Status 400 if User is not logged in</li>
+                    <li>True if successfully followed, else false</li>
+                </ul></td>
             </tr>
         </tbody>
     </table>

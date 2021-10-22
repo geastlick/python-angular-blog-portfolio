@@ -14,7 +14,7 @@
         </div>
         <div class="grid">
             <p-button label="Cancel" (onClick)="handleCancel()"></p-button>
-            <p-button label="Sign In" (onClick)="handleSignIn()"></p-button>
+            <p-button label="Sign In" [disabled]="!signinForm.valid" (onClick)="handleSignIn()"></p-button>
         </div>
     </div>
 </form>

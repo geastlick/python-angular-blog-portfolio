@@ -1,7 +1,7 @@
 from os import name
 from sqlalchemy import func, case, text, bindparam, Integer
-from flask import Blueprint, jsonify, abort, request
-from ..models import BlogEntry, User, db, Blog, BlogRating, Rating, BlogCategory, BlogEntryRating
+from flask import Blueprint, jsonify, abort, request, session
+from ..models import BlogEntry, User, db, Blog, BlogRating, Rating, BlogCategory, BlogEntryRating, follow_blog
 
 bp = Blueprint('blogs', __name__, url_prefix='/blogs')
 
@@ -158,3 +158,17 @@ def blog_entries_for_blog_id(id: int):
             "stars_5": blogEntry.stars_5
         })
     return jsonify({"count_all_entries": entry_count, "blog_entries": result})
+
+@bp.route('/<int:id>/follow', methods=['POST'])
+def user_follow_blog(id: int):
+    u = User.query.get_or_404(id)
+    if "username" not in session or "userid" not in session:
+        return abort(400)
+    try:
+        insert = follow_blog.insert().values({"blog_id": id, "follower_id": session["userid"]})
+        db.session.execute(insert)
+        db.session.commit()
+        return jsonify(True)
+    except:
+        # something went wrong :(
+        return jsonify(False)

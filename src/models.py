@@ -155,6 +155,7 @@ class BlogRating(db.Model):
     blog = db.Column('blog_id', db.BigInteger, db.ForeignKey('blog.id'))
     user = db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
     rating = db.Column('rating_id', db.Integer, db.ForeignKey('rating.id'))
+    comment = db.Column('comment', db.String(255))
 
     def __init__(self, blog: int, user: int, rating: int):
         self.blog = blog

@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../../../services/users.service';
 
 @Component({
@@ -12,8 +12,12 @@ export class SigninComponent implements OnInit {
     @Output() private status = new EventEmitter<any>();
 
     signinForm = new FormGroup({
-        username: new FormControl(''),
-        password: new FormControl(''),
+        username: new FormControl('', [
+            Validators.required
+        ]),
+        password: new FormControl('', [
+            Validators.required
+        ]),
     })
 
     constructor(private userService: UserService) { }

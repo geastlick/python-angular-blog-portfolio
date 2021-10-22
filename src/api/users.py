@@ -2,7 +2,7 @@ import hashlib
 import secrets
 import binascii
 from flask import Blueprint, jsonify, abort, request, session
-from ..models import db, User
+from ..models import db, User, follow_author
 
 bp = Blueprint('users', __name__, url_prefix='/users')
 
@@ -104,3 +104,4 @@ def update(id: int):
     except:
         # something went wrong :(
         return jsonify(False)
+

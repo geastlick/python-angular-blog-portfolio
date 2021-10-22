@@ -1,6 +1,14 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { UserService } from '../../../services/users.service';
+
+
+export const passwordsMustMatch: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const pwd = control.get('password');
+    const confirm = control.get('password_confirm');
+  
+    return pwd && confirm && pwd.value === confirm.value ? { passwordsMustMatch: true } : null;
+  };
 
 @Component({
     selector: 'app-register',
@@ -12,12 +20,25 @@ export class RegisterComponent implements OnInit {
     @Output() private status = new EventEmitter<any>();
 
     registerForm = new FormGroup({
-        username: new FormControl(''),
-        password: new FormControl(''),
-        password_confirm: new FormControl(''),
-        name: new FormControl(''),
-        email: new FormControl(''),
-    })
+        username: new FormControl('', [ 
+            Validators.required,
+            Validators.minLength(3)
+        ]),
+        password: new FormControl('', [
+            Validators.required,
+            Validators.minLength(8)
+        ]),
+        password_confirm: new FormControl('', [
+            Validators.required
+        ]),
+        name: new FormControl('', [
+            Validators.required
+        ]),
+        email: new FormControl('', [
+            Validators.required,
+            Validators.email
+        ]),
+    }, { validators: passwordsMustMatch})
 
     constructor(private userService: UserService) { }
 

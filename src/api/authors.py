@@ -1,5 +1,5 @@
-from flask import Blueprint, jsonify, abort, request
-from ..models import Blog, db, User, BlogRating, Rating
+from flask import Blueprint, jsonify, abort, request, session
+from ..models import Blog, db, User, BlogRating, Rating, follow_author
 from sqlalchemy import func
 
 bp = Blueprint('authors', __name__, url_prefix='/authors')
@@ -64,3 +64,17 @@ def popular_authors():
             "blogs": author_blogs
         })
     return jsonify({"count_all_authors": count, "authors": result})
+
+@bp.route('/<int:id>/follow', methods=['POST'])
+def user_follow_author(id: int):
+    u = User.query.get_or_404(id)
+    if "username" not in session or "userid" not in session:
+        return abort(400)
+    try:
+        insert = follow_author.insert().values({"author_id": id, "follower_id": session["userid"]})
+        db.session.execute(insert)
+        db.session.commit()
+        return jsonify(True)
+    except:
+        # something went wrong :(
+        return jsonify(False)

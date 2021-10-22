@@ -32,7 +32,7 @@
         </div>
         <div class="grid">
             <p-button label="Cancel" (onClick)="handleCancel()"></p-button>
-            <p-button label="Register" (onClick)="handleRegister()"></p-button>
+            <p-button label="Register" [disabled]="!registerForm.valid" (onClick)="handleRegister()"></p-button>
         </div>
     </div>
 </form>

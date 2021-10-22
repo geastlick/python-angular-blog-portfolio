@@ -13,41 +13,40 @@ import { BlogService } from 'src/app/services/blogs.service';
 export class PopularBlogsComponent implements OnInit {
 
     blogCount: number;
-    blogPageSize: number = 8;
     blogPage: number = 1;
     popularBlogs: [Blog];
-    rowsPerPage = [2, 4, 6, 8, 12, 16, { showAll: 'All' }];
+    blogPageSize: number = 8;
+    rowsPerPage = [4, 8, 12, { showAll: 'All' }];
 
     constructor(private blogService: BlogService, private resizeService: ResizeService) { }
 
     ngOnInit(): void {
-        this.blogService.popular(this.blogPageSize, this.blogPage)
-            .subscribe(
-                result => {
-                    this.blogCount = result['count_all_blogs'];
-                    this.popularBlogs = result['blogs'];
-                }
-            );
         this.resizeService.onResize$
             .pipe(delay(0))
             .subscribe(x => {
-                switch (x) {
-                    case ScreenSize.XS:
-                    case ScreenSize.SM:
-                        this.rowsPerPage = [2, 4, 6];
-                        this.paginate({ rows: 4, first: this.blogPageSize * (this.blogPage - 1) });
-                        break;
-                    case ScreenSize.LG:
-                    case ScreenSize.MD:
-                        this.rowsPerPage = [3, 6, 9];
-                        this.paginate({ rows: 6, first: this.blogPageSize * (this.blogPage - 1) });
-                        break;
-                    default:
-                        this.rowsPerPage = [4, 8, 12, { showAll: 'All' }];
-                        this.paginate({ rows: 8, first: this.blogPageSize * (this.blogPage - 1) });
-                        break;
-                }
+                this.configure(x);
             });
+        this.configure(this.resizeService.size);
+    }
+
+    configure(size: ScreenSize) {
+        let index = (this.blogPageSize == this.blogCount ? this.rowsPerPage.length - 1 : this.rowsPerPage.indexOf(this.blogPageSize));
+        switch (size) {
+            case ScreenSize.XS:
+            case ScreenSize.SM:
+                this.rowsPerPage = [2, 4, 6, { showAll: 'All' }];
+                this.paginate({ rows: (this.blogPageSize == this.blogCount ? this.blogCount : this.rowsPerPage[index]), first: this.blogPageSize * (this.blogPage - 1) });
+                break;
+            case ScreenSize.LG:
+            case ScreenSize.MD:
+                this.rowsPerPage = [3, 6, 9, { showAll: 'All' }];
+                this.paginate({ rows: (this.blogPageSize == this.blogCount ? this.blogCount : this.rowsPerPage[index]), first: this.blogPageSize * (this.blogPage - 1) });
+                break;
+            default:
+                this.rowsPerPage = [4, 8, 12, { showAll: 'All' }];
+                this.paginate({ rows: (this.blogPageSize == this.blogCount ? this.blogCount : this.rowsPerPage[index]), first: this.blogPageSize * (this.blogPage - 1) });
+                break;
+        }
     }
 
     paginate(event) {
