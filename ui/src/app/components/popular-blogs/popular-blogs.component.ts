@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { delay } from 'rxjs/operators';
 import { Blog } from 'src/app/interfaces/blog';
-import { ResizeService } from 'src/app/screen-size-detector/resize.service';
-import { ScreenSize } from 'src/app/screen-size-detector/screen-size';
 import { BlogService } from 'src/app/services/blogs.service';
+import { PageOptionIndex } from '../custom/responsive-paginator/page-option-index';
+import { PageOptions } from '../custom/responsive-paginator/page-options';
+import { PaginatorPageChange } from '../custom/responsive-paginator/paginator-page-change';
 
 @Component({
     selector: 'app-popular-blogs',
@@ -12,58 +12,27 @@ import { BlogService } from 'src/app/services/blogs.service';
 })
 export class PopularBlogsComponent implements OnInit {
 
-    blogCount: number;
-    blogPage: number = 1;
+    itemCount: number;
     popularBlogs: [Blog];
-    blogPageSize: number = 8;
-    rowsPerPage = [4, 8, 12, { showAll: 'All' }];
 
-    constructor(private blogService: BlogService, private resizeService: ResizeService) { }
+    pageOptionIndex: PageOptionIndex = { screenSize: 'MD', index: 1 };
+    pageOptions: PageOptions = [];
+    initialPage: number = 1;
+
+    constructor(private blogService: BlogService) { }
 
     ngOnInit(): void {
-        this.resizeService.onResize$
-            .pipe(delay(0))
-            .subscribe(x => {
-                this.configure(x);
-            });
-        this.configure(this.resizeService.size);
+        this.pageOptions['SM'] = [2, 4, 6, { showAll: 'All' }];
+        this.pageOptions['MD'] = [3, 6, 9, { showAll: 'All' }];
+        this.pageOptions['XL'] = [4, 8, 12, { showAll: 'All' }];
     }
 
-    configure(size: ScreenSize) {
-        let index = (this.blogPageSize == this.blogCount ? this.rowsPerPage.length - 1 : this.rowsPerPage.indexOf(this.blogPageSize));
-        switch (size) {
-            case ScreenSize.XS:
-            case ScreenSize.SM:
-                this.rowsPerPage = [2, 4, 6, { showAll: 'All' }];
-                this.paginate({ rows: (this.blogPageSize == this.blogCount ? this.blogCount : this.rowsPerPage[index]), first: this.blogPageSize * (this.blogPage - 1) });
-                break;
-            case ScreenSize.LG:
-            case ScreenSize.MD:
-                this.rowsPerPage = [3, 6, 9, { showAll: 'All' }];
-                this.paginate({ rows: (this.blogPageSize == this.blogCount ? this.blogCount : this.rowsPerPage[index]), first: this.blogPageSize * (this.blogPage - 1) });
-                break;
-            default:
-                this.rowsPerPage = [4, 8, 12, { showAll: 'All' }];
-                this.paginate({ rows: (this.blogPageSize == this.blogCount ? this.blogCount : this.rowsPerPage[index]), first: this.blogPageSize * (this.blogPage - 1) });
-                break;
-        }
+    onPageChange(event: PaginatorPageChange) {
+        this.blogService.popular(event.pageSize, event.page).subscribe(data => {
+            this.itemCount = data['count_all_blogs'];
+            this.popularBlogs = data['blogs'];
+        });
+
     }
 
-    paginate(event) {
-        // page is 0 indexed
-        if (event.rows != this.blogPageSize) {
-            this.blogPageSize = event.rows;
-            this.blogPage = Math.floor(event.first / event.rows);
-            this.blogService.popular(this.blogPageSize, this.blogPage).subscribe(data => {
-                this.blogCount = data['count_all_blogs'];
-                this.popularBlogs = data['blogs'];
-            });
-        } else if (event.page + 1 != this.blogPage) {
-            this.blogPage = event.page + 1;
-            this.blogService.popular(this.blogPageSize, this.blogPage).subscribe(data => {
-                this.blogCount = data['count_all_blogs'];
-                this.popularBlogs = data['blogs'];
-            });
-        }
-    }
 }

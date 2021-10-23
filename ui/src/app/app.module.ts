@@ -46,6 +46,7 @@ import { EntryCardComponent } from './components/entry-card/entry-card.component
 import { PopularAuthorsComponent } from './components/popular-authors/popular-authors.component';
 import { ResizeService } from './screen-size-detector/resize.service';
 import { SizeDetectorComponent } from './screen-size-detector/size-detector.component';
+import { ResponsivePaginatorComponent } from './components/custom/responsive-paginator/responsive-paginator.component';
 
 @NgModule({
     declarations: [
@@ -61,7 +62,8 @@ import { SizeDetectorComponent } from './screen-size-detector/size-detector.comp
         BlogComponent,
         EntryCardComponent,
         PopularAuthorsComponent,
-        SizeDetectorComponent
+        SizeDetectorComponent,
+        ResponsivePaginatorComponent
     ],
     imports: [
         BrowserModule,
