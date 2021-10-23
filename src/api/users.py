@@ -2,7 +2,7 @@ import hashlib
 import secrets
 import binascii
 from flask import Blueprint, jsonify, abort, request, session
-from ..models import db, User, follow_author
+from ..models import db, User
 
 bp = Blueprint('users', __name__, url_prefix='/users')
 

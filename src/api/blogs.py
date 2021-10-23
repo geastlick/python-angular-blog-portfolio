@@ -1,5 +1,5 @@
 from os import name
-from sqlalchemy import func, case, text, bindparam, Integer
+from sqlalchemy import func, case, text, bindparam, Integer, and_
 from flask import Blueprint, jsonify, abort, request, session
 from ..models import BlogEntry, User, db, Blog, BlogRating, Rating, BlogCategory, BlogEntryRating, follow_blog
 
@@ -65,6 +65,67 @@ def popular_blogs():
         })
     return jsonify({"count_all_blogs": count_blogs, "blogs": result})
 
+@bp.route('/followed', methods=['GET'])
+def followed_blogs():
+    """Blogs followed ordered by popularity"""
+    if "username" not in session or "userid" not in session:
+        return abort(400)
+    q = (
+        db.session.query(Blog.id.label('id'),
+                         Blog.title.label('title'),
+                         Blog.description.label('description'),
+                         BlogCategory.name.label('category_name'),
+                         Blog.published.label('published'),
+                         User.name.label('author_name'),
+                         User.avatar.label('avatar'),
+                         func.avg(Rating.stars).label('avg_stars'),
+                         func.sum(Rating.stars-3).label('sum_stars'),
+                         func.sum(case(value=Rating.stars, whens={
+                                  1: 1}, else_=0)).label('stars_1'),
+                         func.sum(case(value=Rating.stars, whens={
+                                  2: 1}, else_=0)).label('stars_2'),
+                         func.sum(case(value=Rating.stars, whens={
+                                  3: 1}, else_=0)).label('stars_3'),
+                         func.sum(case(value=Rating.stars, whens={
+                                  4: 1}, else_=0)).label('stars_4'),
+                         func.sum(case(value=Rating.stars, whens={
+                                  5: 1}, else_=0)).label('stars_5')
+                         )
+        .select_from(Blog)
+        .join(follow_blog, and_(follow_blog.c.blog_id == Blog.id,follow_blog.c.follower_id == session["userid"]))
+        .outerjoin(BlogRating)
+        .outerjoin(Rating)
+        .join(BlogCategory)
+        .join(User, User.id == Blog.author)
+        .filter(Blog.published != None)
+        .group_by(Blog.id, Blog.title, Blog.description, BlogCategory.name, Blog.published, User.name, User.avatar)
+        .order_by('sum_stars')
+    )
+    count_blogs = q.count()
+    if request.args.get('page_size') is not None:
+        page_size = int(request.args.get('page_size'))
+        q = q.limit(page_size)
+        if request.args.get('page') is not None:
+            page = int(request.args.get('page'))
+            q = q.offset(page_size * (page - 1))
+    result = []
+    for blog in q.all():
+        result.append({
+            "id": blog.id,
+            "title": blog.title,
+            "description": blog.description,
+            "category": blog.category_name,
+            "published": blog.published,
+            "author": blog.author_name,
+            "avatar": blog.avatar,
+            "stars_avg": blog.avg_stars,
+            "stars_1": blog.stars_1,
+            "stars_2": blog.stars_2,
+            "stars_3": blog.stars_3,
+            "stars_4": blog.stars_4,
+            "stars_5": blog.stars_5
+        })
+    return jsonify({"count_all_blogs": count_blogs, "blogs": result})
 
 @bp.route('/<int:id>', methods=['GET'])
 def blog_by_id(id: int):
@@ -161,7 +222,7 @@ def blog_entries_for_blog_id(id: int):
 
 @bp.route('/<int:id>/follow', methods=['POST'])
 def user_follow_blog(id: int):
-    u = User.query.get_or_404(id)
+    b = Blog.query.get_or_404(id)
     if "username" not in session or "userid" not in session:
         return abort(400)
     try:
@@ -171,4 +232,19 @@ def user_follow_blog(id: int):
         return jsonify(True)
     except:
         # something went wrong :(
+        return jsonify(False)
+
+@bp.route('/<int:id>/unfollow', methods=['POST'])
+def user_unfollow_blog(id: int):
+    b = Blog.query.get_or_404(id)
+    if "username" not in session or "userid" not in session:
+        return abort(400)
+    try:
+        delete = follow_blog.delete().where(and_(follow_blog.c.blog_id == id, follow_blog.c.follower_id == session["userid"]))
+        db.session.execute(delete)
+        db.session.commit()
+        return jsonify(True)
+    except:
+        # something went wrong :(
+        print(db.error)
         return jsonify(False)
