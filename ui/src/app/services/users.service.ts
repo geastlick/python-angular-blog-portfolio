@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry, tap } from 'rxjs/operators';
 
 import { HttpErrorHandler, HandleError } from './http-error-handler.service';
 import { User } from '../interfaces/user';
@@ -19,6 +19,9 @@ const httpOptions = {
 export class UserService {
   private handleError: HandleError;
 
+  loggedIn: boolean = false;
+  loggedInUser: User = null;
+
   constructor(
     private http: HttpClient,
     httpErrorHandler: HttpErrorHandler) {
@@ -30,6 +33,7 @@ export class UserService {
     const data: any = {username: username, password: password};
     return this.http.post<boolean>('api/login', data, httpOptions)
       .pipe(
+          tap(data => { this.loggedIn = data; }),
           catchError(this.handleError('login', false))
       );
   }
@@ -37,6 +41,7 @@ export class UserService {
   self(): Observable<User> {
     return this.http.get<User>('api/self', httpOptions)
     .pipe(
+        tap(data => { this.loggedInUser = data }),
         catchError(this.handleError('self', <User>{}))
     );
   }
@@ -44,6 +49,7 @@ export class UserService {
   logout(): Observable<boolean> {
       return this.http.get<boolean>('/api/logout', httpOptions)
         .pipe(
+            tap(data => { this.loggedIn = !data; }),
             catchError(this.handleError('logout', false))
         );
   }

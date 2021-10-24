@@ -18,9 +18,7 @@ export class AppHeaderComponent implements OnInit {
     crumbs: MenuItem[] = [];
     home: MenuItem;
 
-    loggedIn: boolean = false;
     loginModalVisible: boolean = false;
-    self: User = null;
 
     constructor(private userService: UserService,
         private confirmationService: ConfirmationService,
@@ -71,8 +69,8 @@ export class AppHeaderComponent implements OnInit {
         let loginoutmenu = this.items.find(item => item.id == "loginoutmenu");
         let loginoutitem = loginoutmenu.items.find(item => item.id == "loginoutitem");
 
-        if (this.loggedIn) {
-            loginoutmenu.label = this.self.name;
+        if (this.userService.loggedIn) {
+            loginoutmenu.label = this.userService.loggedInUser.name;
             loginoutitem.label = 'Log out';
         } else {
             loginoutmenu.label = 'Not logged in';
@@ -110,8 +108,6 @@ export class AppHeaderComponent implements OnInit {
         switch (value) {
             case "Log In Success":
                 this.userService.self().subscribe(self => {
-                    this.self = self
-                    this.loggedIn = true;
                     this.updateLogin();
                 });
                 break;
@@ -138,13 +134,13 @@ export class AppHeaderComponent implements OnInit {
     }
 
     handleLogOnOff(e: Event) {
-        if (!this.loggedIn) {
+        if (!this.userService.loggedIn) {
             this.loginModalVisible = true;
             // Signin/Register is modal, so result will come from signinResult()
         } else {
-            this.userService.logout().subscribe();
-            this.loggedIn = false;
-            this.updateLogin();
+            this.userService.logout().subscribe(data => {
+                this.updateLogin();
+            });
         }
     }
 
