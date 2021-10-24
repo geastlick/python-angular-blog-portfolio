@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { SharedModule } from 'primeng/api';
 import { PanelModule } from 'primeng/panel';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { SplitterModule } from 'primeng/splitter';
@@ -13,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AccordionModule } from 'primeng/accordion';
 import { MenubarModule } from 'primeng/menubar';
+import { MenuModule } from 'primeng/menu';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -70,6 +72,7 @@ import { ResponsivePaginatorComponent } from './components/custom/responsive-pag
         HttpClientModule,
         BrowserAnimationsModule,
         AppRoutingModule,
+        SharedModule,
         PanelModule,
         ScrollPanelModule,
         SplitterModule,
@@ -77,6 +80,7 @@ import { ResponsivePaginatorComponent } from './components/custom/responsive-pag
         FormsModule,
         AccordionModule,
         MenubarModule,
+        MenuModule,
         BreadcrumbModule,
         ButtonModule,
         DialogModule,

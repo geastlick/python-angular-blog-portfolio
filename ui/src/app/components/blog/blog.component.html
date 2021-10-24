@@ -8,9 +8,8 @@
             <hr />
         </div>
         <p-paginator [rows]="entryPageSize" [totalRecords]="entryCount" (onPageChange)="paginate($event)"
-                [rowsPerPageOptions]="[5,10,20,30,{showAll:'All'}]"
-                [showJumpToPageDropdown]="true" [showPageLinks]="false"
-        ></p-paginator>
+            [rowsPerPageOptions]="[5,10,20,30,{showAll:'All'}]" [showJumpToPageDropdown]="true" [showPageLinks]="false">
+        </p-paginator>
         <div class="col-12" *ngFor="let entry of entries">
             <app-entry-card [entry]="entry"></app-entry-card>
         </div>

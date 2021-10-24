@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ApplicationInitStatus, ApplicationRef, ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { MenuItem, PrimeIcons } from 'primeng/api';
 import { UserService } from 'src/app/services/users.service';
 import { ConfirmationService } from 'primeng/api';
 import { NavigationEnd, Router } from '@angular/router';
+import { User } from 'src/app/interfaces/user';
 
 @Component({
     selector: 'app-header',
@@ -17,13 +18,13 @@ export class AppHeaderComponent implements OnInit {
     crumbs: MenuItem[] = [];
     home: MenuItem;
 
-    buttonText: String = "Log In";
-    loginVisible: boolean = false;
+    loggedIn: boolean = false;
+    loginModalVisible: boolean = false;
+    self: User = null;
 
     constructor(private userService: UserService,
         private confirmationService: ConfirmationService,
-        private router: Router,
-        private ref: ChangeDetectorRef) { }
+        private router: Router) { }
 
     ngOnInit(): void {
         this.items = [
@@ -44,14 +45,41 @@ export class AppHeaderComponent implements OnInit {
                         routerLink: ['/blogs/popular']
                     }
                 ]
+            },
+            {
+                id: 'loginoutmenu',
+                label: 'Not logged in', icon: PrimeIcons.COG,
+                items: [
+                    {
+                        id: 'loginoutitem',
+                        label: 'Log in',
+                        command: (event) => this.handleLogOnOff(event)
+                    }
+                ]
             }
         ];
 
         this.home = { icon: 'pi pi-home', routerLink: '/' }
 
+
         this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) { this.breadcrumb(event) }
         });
+    }
+
+    updateLogin() {
+        let loginoutmenu = this.items.find(item => item.id == "loginoutmenu");
+        let loginoutitem = loginoutmenu.items.find(item => item.id == "loginoutitem");
+
+        if (this.loggedIn) {
+            loginoutmenu.label = this.self.name;
+            loginoutitem.label = 'Log out';
+        } else {
+            loginoutmenu.label = 'Not logged in';
+            loginoutitem.label = 'Log in';
+        }
+        // p-menubar uses OnPush so we have to change the array reference
+        this.items = this.items.slice(0);
     }
 
     breadcrumb(event: NavigationEnd) {
@@ -78,10 +106,14 @@ export class AppHeaderComponent implements OnInit {
     }
 
     signinResult(value: string) {
-        this.loginVisible = false;
+        this.loginModalVisible = false;
         switch (value) {
             case "Log In Success":
-                this.buttonText = "Log Out"
+                this.userService.self().subscribe(self => {
+                    this.self = self
+                    this.loggedIn = true;
+                    this.updateLogin();
+                });
                 break;
             case "Log In Failure":
                 this.confirm("Error", "Log In Failed!", 'pi pi-exclamation-triangle');
@@ -106,12 +138,13 @@ export class AppHeaderComponent implements OnInit {
     }
 
     handleLogOnOff(e: Event) {
-        if (this.buttonText == "Log In") {
-            this.loginVisible = true;
+        if (!this.loggedIn) {
+            this.loginModalVisible = true;
             // Signin/Register is modal, so result will come from signinResult()
         } else {
             this.userService.logout().subscribe();
-            this.buttonText = "Log In";
+            this.loggedIn = false;
+            this.updateLogin();
         }
     }
 

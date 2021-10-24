@@ -40,6 +40,12 @@ export class RegisterComponent implements OnInit {
         ]),
     }, { validators: passwordsMustMatch})
 
+    get username() { return this.registerForm.get('username'); }
+    get password() { return this.registerForm.get('password'); }
+    get password_confirm() { return this.registerForm.get('password_confirm'); }
+    get name() { return this.registerForm.get('name'); }
+    get email() { return this.registerForm.get('email'); }
+
     constructor(private userService: UserService) { }
 
     ngOnInit(): void { }

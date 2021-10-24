@@ -1,33 +1,43 @@
 <form [formGroup]="registerForm">
     <div class="fluid">
         <div class="field grid">
-            <label for="username" class="col-4 mb-2 md-2 mb-md-0">Username: </label>
+            <label for="r-username" class="col-4 mb-2 md-2 mb-md-0">Username: </label>
             <div class="col-8 md-10">
-                <input id="username" type="text" formControlName="username" pInputText>
+                <input id="r-username" type="text" formControlName="username" pInputText>
+            </div>
+            <div *ngIf="username.invalid && (username.dirty || username.touched)"
+                class="text-xs font-medium text-pink-500">
+
+                <div *ngIf="username.errors?.required">
+                    Username is required.
+                </div>
+                <div *ngIf="username.errors?.minlength">
+                    Username must be at least 3 characters long.
+                </div>
             </div>
         </div>
         <div class="field grid">
-            <label for="password" class="col-4 mb-2 md-2 mb-md-0">Password: </label>
+            <label for="r-password" class="col-4 mb-2 md-2 mb-md-0">Password: </label>
             <div class="col-8 md-10">
-                <input id="password" type="password" formControlName="password" pInputText>
+                <input id="r-password" type="password" formControlName="password" pInputText>
             </div>
         </div>
         <div class="field grid">
-            <label for="password_confirm" class="col-4 mb-2 md-2 mb-md-0">Confirm Password: </label>
+            <label for="r-password_confirm" class="col-4 mb-2 md-2 mb-md-0">Confirm Password: </label>
             <div class="col-8 md-10">
-                <input id="password_confirm" type="password" formControlName="password_confirm" pInputText>
+                <input id="r-password_confirm" type="password" formControlName="password_confirm" pInputText>
             </div>
         </div>
         <div class="field grid">
-            <label for="name" class="col-4 mb-2 md-2 mb-md-0">Name: </label>
+            <label for="r-name" class="col-4 mb-2 md-2 mb-md-0">Name: </label>
             <div class="col-8 md-10">
-                <input id="name" type="text" formControlName="name" pInputText>
+                <input id="r-name" type="text" formControlName="name" pInputText>
             </div>
         </div>
         <div class="field grid">
-            <label for="email" class="col-4 mb-2 md-2 mb-md-0">Email: </label>
+            <label for="r-email" class="col-4 mb-2 md-2 mb-md-0">Email: </label>
             <div class="col-8 md-10">
-                <input id="email" type="text" formControlName="email" pInputText>
+                <input id="r-email" type="text" formControlName="email" pInputText>
             </div>
         </div>
         <div class="grid">
