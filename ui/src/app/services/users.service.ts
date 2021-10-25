@@ -19,8 +19,15 @@ const httpOptions = {
 export class UserService {
   private handleError: HandleError;
 
-  loggedIn: boolean = false;
-  loggedInUser: User = null;
+  private loggedIn: boolean = false;
+  private loggedInUser: User = null;
+
+  get isLoggedIn(): boolean {
+    return this.loggedIn;
+  }
+  get currentUser(): User {
+      return (this.loggedIn ? this.loggedInUser : null);
+  }
 
   constructor(
     private http: HttpClient,

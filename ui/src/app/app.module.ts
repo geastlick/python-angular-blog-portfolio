@@ -49,6 +49,9 @@ import { PopularAuthorsComponent } from './components/popular-authors/popular-au
 import { ResizeService } from './screen-size-detector/resize.service';
 import { SizeDetectorComponent } from './screen-size-detector/size-detector.component';
 import { ResponsivePaginatorComponent } from './components/custom/responsive-paginator/responsive-paginator.component';
+import { FollowingAuthorsComponent } from './components/following-authors/following-authors.component';
+import { FollowingBlogsComponent } from './components/following-blogs/following-blogs.component';
+import { FollowingRecentComponent } from './components/following-recent/following-recent.component';
 
 @NgModule({
     declarations: [
@@ -65,7 +68,10 @@ import { ResponsivePaginatorComponent } from './components/custom/responsive-pag
         EntryCardComponent,
         PopularAuthorsComponent,
         SizeDetectorComponent,
-        ResponsivePaginatorComponent
+        ResponsivePaginatorComponent,
+        FollowingAuthorsComponent,
+        FollowingBlogsComponent,
+        FollowingRecentComponent
     ],
     imports: [
         BrowserModule,

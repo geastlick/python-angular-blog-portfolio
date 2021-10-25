@@ -1,5 +1,6 @@
 from os import name
 from sqlalchemy import func, case, text, bindparam, Integer, and_
+from sqlalchemy.orm import aliased
 from flask import Blueprint, jsonify, abort, request, session
 from ..models import BlogEntry, User, db, Blog, BlogRating, Rating, BlogCategory, BlogEntryRating, follow_blog
 
@@ -9,36 +10,80 @@ bp = Blueprint('blogs', __name__, url_prefix='/blogs')
 @bp.route('/popular', methods=['GET'])
 def popular_blogs():
     """Blogs ordered by popularity"""
-    q = (
-        db.session.query(Blog.id.label('id'),
-                         Blog.title.label('title'),
-                         Blog.description.label('description'),
-                         BlogCategory.name.label('category_name'),
-                         Blog.published.label('published'),
-                         User.name.label('author_name'),
-                         User.avatar.label('avatar'),
-                         func.avg(Rating.stars).label('avg_stars'),
-                         func.sum(Rating.stars-3).label('sum_stars'),
-                         func.sum(case(value=Rating.stars, whens={
-                                  1: 1}, else_=0)).label('stars_1'),
-                         func.sum(case(value=Rating.stars, whens={
-                                  2: 1}, else_=0)).label('stars_2'),
-                         func.sum(case(value=Rating.stars, whens={
-                                  3: 1}, else_=0)).label('stars_3'),
-                         func.sum(case(value=Rating.stars, whens={
-                                  4: 1}, else_=0)).label('stars_4'),
-                         func.sum(case(value=Rating.stars, whens={
-                                  5: 1}, else_=0)).label('stars_5')
-                         )
-        .select_from(Blog)
-        .outerjoin(BlogRating)
-        .outerjoin(Rating)
-        .join(BlogCategory)
-        .join(User, User.id == Blog.author)
-        .filter(Blog.published != None)
-        .group_by(Blog.id, Blog.title, Blog.description, BlogCategory.name, Blog.published, User.name, User.avatar)
-        .order_by('sum_stars')
-    )
+    author = aliased(User)
+    blog_rating = aliased(BlogRating)
+    blog_stars = aliased(Rating)
+    user_rating = aliased(BlogRating)
+    user_stars = aliased(Rating)
+    if 'userid' in session:
+        q = (
+            db.session.query(Blog.id.label('id'),
+                             Blog.title.label('title'),
+                             Blog.description.label('description'),
+                             BlogCategory.name.label('category_name'),
+                             Blog.published.label('published'),
+                             author.name.label('author_name'),
+                             author.avatar.label('avatar'),
+                             func.avg(blog_stars.stars).label('avg_stars'),
+                             func.sum(blog_stars.stars-3).label('sum_stars'),
+                             func.sum(case(value=blog_stars.stars, whens={
+                                 1: 1}, else_=0)).label('stars_1'),
+                             func.sum(case(value=blog_stars.stars, whens={
+                                 2: 1}, else_=0)).label('stars_2'),
+                             func.sum(case(value=blog_stars.stars, whens={
+                                 3: 1}, else_=0)).label('stars_3'),
+                             func.sum(case(value=blog_stars.stars, whens={
+                                 4: 1}, else_=0)).label('stars_4'),
+                             func.sum(case(value=blog_stars.stars, whens={
+                                 5: 1}, else_=0)).label('stars_5'),
+                             (follow_blog.c.blog_id != None).label('following'),
+                             user_stars.stars.label('rating')
+                             )
+            .select_from(Blog)
+            .outerjoin(blog_rating)
+            .outerjoin(blog_stars)
+            .join(BlogCategory)
+            .join(author, author.id == Blog.author)
+            .outerjoin(follow_blog, and_(follow_blog.c.blog_id == Blog.id, follow_blog.c.follower_id == session['userid']))
+            .outerjoin(user_rating, and_(user_rating.blog == Blog.id, user_rating.user == follow_blog.c.follower_id))
+            .outerjoin(user_stars, user_stars.id == user_rating.rating)
+            .filter(Blog.published != None)
+            .group_by(Blog.id, Blog.title, Blog.description, BlogCategory.name, Blog.published, author.name, author.avatar,
+                (follow_blog.c.blog_id != None), user_stars.stars
+            )
+            .order_by('sum_stars')
+        )
+    else:
+        q = (
+            db.session.query(Blog.id.label('id'),
+                             Blog.title.label('title'),
+                             Blog.description.label('description'),
+                             BlogCategory.name.label('category_name'),
+                             Blog.published.label('published'),
+                             author.name.label('author_name'),
+                             author.avatar.label('avatar'),
+                             func.avg(blog_stars.stars).label('avg_stars'),
+                             func.sum(blog_stars.stars-3).label('sum_stars'),
+                             func.sum(case(value=blog_stars.stars, whens={
+                                 1: 1}, else_=0)).label('stars_1'),
+                             func.sum(case(value=blog_stars.stars, whens={
+                                 2: 1}, else_=0)).label('stars_2'),
+                             func.sum(case(value=blog_stars.stars, whens={
+                                 3: 1}, else_=0)).label('stars_3'),
+                             func.sum(case(value=blog_stars.stars, whens={
+                                 4: 1}, else_=0)).label('stars_4'),
+                             func.sum(case(value=blog_stars.stars, whens={
+                                 5: 1}, else_=0)).label('stars_5')
+                             )
+            .select_from(Blog)
+            .outerjoin(blog_rating)
+            .outerjoin(blog_stars)
+            .join(BlogCategory)
+            .join(author, author.id == Blog.author)
+            .filter(Blog.published != None)
+            .group_by(Blog.id, Blog.title, Blog.description, BlogCategory.name, Blog.published, author.name, author.avatar)
+            .order_by('sum_stars')
+        )
     count_blogs = q.count()
     if request.args.get('page_size') is not None:
         page_size = int(request.args.get('page_size'))
@@ -64,6 +109,7 @@ def popular_blogs():
             "stars_5": blog.stars_5
         })
     return jsonify({"count_all_blogs": count_blogs, "blogs": result})
+
 
 @bp.route('/followed', methods=['GET'])
 def followed_blogs():
@@ -92,7 +138,7 @@ def followed_blogs():
                                   5: 1}, else_=0)).label('stars_5')
                          )
         .select_from(Blog)
-        .join(follow_blog, and_(follow_blog.c.blog_id == Blog.id,follow_blog.c.follower_id == session["userid"]))
+        .join(follow_blog, and_(follow_blog.c.blog_id == Blog.id, follow_blog.c.follower_id == session["userid"]))
         .outerjoin(BlogRating)
         .outerjoin(Rating)
         .join(BlogCategory)
@@ -126,6 +172,7 @@ def followed_blogs():
             "stars_5": blog.stars_5
         })
     return jsonify({"count_all_blogs": count_blogs, "blogs": result})
+
 
 @bp.route('/<int:id>', methods=['GET'])
 def blog_by_id(id: int):
@@ -220,13 +267,15 @@ def blog_entries_for_blog_id(id: int):
         })
     return jsonify({"count_all_entries": entry_count, "blog_entries": result})
 
+
 @bp.route('/<int:id>/follow', methods=['POST'])
 def user_follow_blog(id: int):
     b = Blog.query.get_or_404(id)
     if "username" not in session or "userid" not in session:
         return abort(400)
     try:
-        insert = follow_blog.insert().values({"blog_id": id, "follower_id": session["userid"]})
+        insert = follow_blog.insert().values(
+            {"blog_id": id, "follower_id": session["userid"]})
         db.session.execute(insert)
         db.session.commit()
         return jsonify(True)
@@ -234,13 +283,15 @@ def user_follow_blog(id: int):
         # something went wrong :(
         return jsonify(False)
 
+
 @bp.route('/<int:id>/unfollow', methods=['POST'])
 def user_unfollow_blog(id: int):
     b = Blog.query.get_or_404(id)
     if "username" not in session or "userid" not in session:
         return abort(400)
     try:
-        delete = follow_blog.delete().where(and_(follow_blog.c.blog_id == id, follow_blog.c.follower_id == session["userid"]))
+        delete = follow_blog.delete().where(and_(follow_blog.c.blog_id == id,
+                                                 follow_blog.c.follower_id == session["userid"]))
         db.session.execute(delete)
         db.session.commit()
         return jsonify(True)

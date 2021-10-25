@@ -3,7 +3,6 @@ import { MenuItem, PrimeIcons } from 'primeng/api';
 import { UserService } from 'src/app/services/users.service';
 import { ConfirmationService } from 'primeng/api';
 import { NavigationEnd, Router } from '@angular/router';
-import { User } from 'src/app/interfaces/user';
 
 @Component({
     selector: 'app-header',
@@ -27,20 +26,32 @@ export class AppHeaderComponent implements OnInit {
     ngOnInit(): void {
         this.items = [
             {
-                label: 'Authors', icon: PrimeIcons.USER,
+                label: 'Popular', icon: PrimeIcons.USERS,
                 items: [
                     {
-                        label: 'Popular',
+                        label: 'Authors',
                         routerLink: ['/authors/popular']
+                    },
+                    {
+                        label: 'Blogs',
+                        routerLink: ['/blogs/popular']
                     }
                 ]
             },
             {
-                label: 'Blogs', icon: PrimeIcons.BOOK,
+                id: 'followingmenu', label: 'Following', icon: PrimeIcons.EYE, visible: false,
                 items: [
                     {
-                        label: 'Popular',
-                        routerLink: ['/blogs/popular']
+                        label: 'Authors',
+                        routerLink: ['/authors/following']
+                    },
+                    {
+                        label: 'Blogs',
+                        routerLink: ['/blogs/following']
+                    },
+                    {
+                        label: 'Recent',
+                        routerLink: ['/following/recent']
                     }
                 ]
             },
@@ -68,13 +79,17 @@ export class AppHeaderComponent implements OnInit {
     updateLogin() {
         let loginoutmenu = this.items.find(item => item.id == "loginoutmenu");
         let loginoutitem = loginoutmenu.items.find(item => item.id == "loginoutitem");
+        let followingmenu = this.items.find(item => item.id == "followingmenu");
 
-        if (this.userService.loggedIn) {
-            loginoutmenu.label = this.userService.loggedInUser.name;
+        if (this.userService.isLoggedIn) {
+            loginoutmenu.label = this.userService.currentUser.name;
             loginoutitem.label = 'Log out';
+            followingmenu.visible = true;
         } else {
             loginoutmenu.label = 'Not logged in';
             loginoutitem.label = 'Log in';
+            followingmenu.visible = false;
+            this.router.navigate(['/']);
         }
         // p-menubar uses OnPush so we have to change the array reference
         this.items = this.items.slice(0);
@@ -134,7 +149,7 @@ export class AppHeaderComponent implements OnInit {
     }
 
     handleLogOnOff(e: Event) {
-        if (!this.userService.loggedIn) {
+        if (!this.userService.isLoggedIn) {
             this.loginModalVisible = true;
             // Signin/Register is modal, so result will come from signinResult()
         } else {
